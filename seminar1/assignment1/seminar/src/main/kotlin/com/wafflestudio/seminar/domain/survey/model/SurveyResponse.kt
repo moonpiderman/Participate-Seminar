@@ -1,6 +1,8 @@
 package com.wafflestudio.seminar.domain.survey.model
 
 import com.wafflestudio.seminar.domain.os.model.OperatingSystem
+import com.wafflestudio.seminar.domain.user.model.User
+import org.springframework.lang.Nullable
 import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.Max
@@ -14,6 +16,13 @@ class SurveyResponse(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
+
+    // user_id 추가
+//    @OneToMany(cascade = [CascadeType.PERSIST]) // cascadeType에 대해 면밀히 알아보기
+    @OneToOne(cascade = [CascadeType.PERSIST])
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @Nullable
+    var user: User? = null,
 
     @ManyToOne
     @JoinColumn(name = "os_id", referencedColumnName = "id")
