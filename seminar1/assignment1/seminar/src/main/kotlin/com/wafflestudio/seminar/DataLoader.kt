@@ -34,9 +34,9 @@ class DataLoader(
 
         // user
         val dodin = User(username = "dodin", email = "dodin@gmail.com")
-        val bomoon = User(username = "bomoon", email = "bomoon@gmail.com")
+        val moonhulk = User(username = "moonhulk", email = "moonhulk@gmail.com")
         userRepository.save(dodin)
-        userRepository.save(bomoon)
+        userRepository.save(moonhulk)
 
         BufferedReader(FileReader(ClassPathResource("data/example_surveyresult.tsv").file)).use { br ->
             br.lines().forEach {
