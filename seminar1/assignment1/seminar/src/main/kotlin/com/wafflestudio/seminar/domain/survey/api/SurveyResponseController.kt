@@ -4,6 +4,7 @@ import com.wafflestudio.seminar.domain.survey.dto.SurveyResponseDto
 import com.wafflestudio.seminar.domain.os.exception.OsNotFoundException
 import com.wafflestudio.seminar.domain.survey.exception.SurveyNotFoundException
 import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
+import com.wafflestudio.seminar.domain.survey.repository.SurveyResponseRepository
 import com.wafflestudio.seminar.domain.survey.service.SurveyResponseService
 import org.modelmapper.ModelMapper
 import org.springframework.http.ResponseEntity
@@ -14,6 +15,7 @@ import javax.validation.Valid
 @RequestMapping("/api/v1/results")
 class SurveyResponseController(
     private val surveyResponseService: SurveyResponseService,
+    private val surveyResponseRepository: SurveyResponseRepository,
     private val modelMapper: ModelMapper
 ) {
     @GetMapping("/")
@@ -46,14 +48,22 @@ class SurveyResponseController(
         @ModelAttribute @Valid body: SurveyResponseDto.CreateRequest,
         @RequestHeader("User-Id") userId: Long
     ): SurveyResponseDto.Response {
-        //TODO: API 생성
-//        val newSurveyResponse = modelMapper.map(body, SurveyResponse::class.java)
-        return SurveyResponseDto.Response()
+//        //TODO: API 생성
+        val newSurvey = SurveyResponse(
+            os = body.os, springExp = body.springExp, rdbExp = body.rdbExp, programmingExp = body.programmingExp,
+            major = body.major, grade = body.grade, backendReason = body.backendReason, waffleReason = body.waffleReason,
+            somethingToSay = body.somethingToSay
+        )
+        surveyResponseRepository.save(newSurvey)
+        return SurveyResponseDto.Response(id = newSurvey.id, os = newSurvey.os, springExp = newSurvey.springExp, rdbExp = newSurvey.rdbExp,
+        programmingExp = newSurvey.programmingExp, major = newSurvey.major, grade = newSurvey.grade, backendReason = newSurvey.backendReason,
+        waffleReason = newSurvey.waffleReason, somethingToSay = newSurvey.somethingToSay, timestamp = newSurvey.timestamp)
     }
 
-    @PatchMapping("/{id}/")
-    fun modifySurveyResponseWithId(@ModelAttribute @Valid body: SurveyResponseDto.ModifyRequest): SurveyResponseDto.Response {
-        //TODO: API 생성
-        return SurveyResponseDto.Response()
-    }
+//    @PatchMapping("/{id}/")
+//    fun modifySurveyResponseWithId(@ModelAttribute @Valid body: SurveyResponseDto.ModifyRequest): SurveyResponseDto.Response {
+//        //TODO: API 생성
+//        return SurveyResponseDto.Response()
+//    }
+
 }
