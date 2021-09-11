@@ -19,7 +19,7 @@ class SurveyResponse(
 
     // user_id 추가
 //    @OneToMany(cascade = [CascadeType.PERSIST]) // cascadeType에 대해 면밀히 알아보기
-    @OneToOne(cascade = [CascadeType.PERSIST])
+    @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Nullable
     var user: User? = null,
