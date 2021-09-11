@@ -46,12 +46,18 @@ class SurveyResponseDto {
     data class CreateRequest(
         var id: Long?,
         @field:NotNull
-        var os: OperatingSystem?,
+        var os: String,
         @field:NotNull
+        @field:Min(1)
+        @field:Max(5)
         var springExp: Int?,
         @field:NotNull
+        @field:Min(1)
+        @field:Max(5)
         var rdbExp: Int?,
         @field:NotNull
+        @field:Min(1)
+        @field:Max(5)
         var programmingExp: Int?,
         var major: String?,
         var grade: String?,
@@ -59,21 +65,22 @@ class SurveyResponseDto {
         var waffleReason: String?,
         var somethingToSay: String?,
         var timestamp: LocalDateTime?
-    ) {
-        constructor(surveyResponse: SurveyResponse) : this(
-            surveyResponse.id,
-            surveyResponse.os,
-            surveyResponse.springExp,
-            surveyResponse.rdbExp,
-            surveyResponse.programmingExp,
-            surveyResponse.major,
-            surveyResponse.grade,
-            surveyResponse.backendReason,
-            surveyResponse.waffleReason,
-            surveyResponse.somethingToSay,
-            surveyResponse.timestamp
-        )
-    }
+    )
+//    ) {
+//        constructor(surveyResponse: SurveyResponse) : this(
+//            surveyResponse.id,
+//            surveyResponse.os,
+//            surveyResponse.springExp,
+//            surveyResponse.rdbExp,
+//            surveyResponse.programmingExp,
+//            surveyResponse.major,
+//            surveyResponse.grade,
+//            surveyResponse.backendReason,
+//            surveyResponse.waffleReason,
+//            surveyResponse.somethingToSay,
+//            surveyResponse.timestamp
+//        )
+//    }
 
     data class ModifyRequest(
         var something: String? = ""

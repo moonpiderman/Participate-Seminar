@@ -3,6 +3,7 @@ package com.wafflestudio.seminar.domain.survey.api
 import com.wafflestudio.seminar.domain.survey.dto.SurveyResponseDto
 import com.wafflestudio.seminar.domain.os.exception.OsNotFoundException
 import com.wafflestudio.seminar.domain.os.service.OperatingSystemService
+import com.wafflestudio.seminar.domain.survey.exception.SurveyFieldValueNotInBoundary
 import com.wafflestudio.seminar.domain.survey.exception.SurveyNotFoundException
 import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
 import com.wafflestudio.seminar.domain.survey.repository.SurveyResponseRepository
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 
 @RestController
 @RequestMapping("/api/v1/results")
@@ -64,7 +67,8 @@ class SurveyResponseController(
         return try {
             val newSurvey = SurveyResponse(
                 user = userService.getUserInfoByUserId(userId),
-                os = body.os,
+//                os = body.os,
+                os = operatingSystemService.getOperatingSystemByName(body.os),
                 springExp = body.springExp,
                 rdbExp = body.rdbExp,
                 programmingExp = body.programmingExp,
@@ -76,9 +80,8 @@ class SurveyResponseController(
             )
             surveyResponseRepository.save(newSurvey)
             ResponseEntity(newSurvey, HttpStatus.CREATED)
-        } catch (e: OsNotFoundException) {
-            ResponseEntity(HttpStatus.NOT_FOUND)
-        } catch (e: UserNotFoundException) {
+        // field 값을 벗어나면 Not Found 가 떠야한다.
+        } catch (e: OsNotFoundException){
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
 
