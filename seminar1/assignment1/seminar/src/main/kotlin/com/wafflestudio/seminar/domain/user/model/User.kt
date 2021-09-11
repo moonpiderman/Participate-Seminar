@@ -17,7 +17,7 @@ class User(
 
     // email 부분을 중복체크 해야한다.
     // api 단에서 중복체크
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @Email
     @NotNull
     var email: String? = null
