@@ -31,19 +31,19 @@ class SurveyResponse(
 
     @Column(name = "spring_exp")
     @NotNull
-    @Min(0, message = "The value must be between 1 and 5")
+    @Min(1, message = "The value must be between 1 and 5")
     @Max(5, message = "The value must be between 1 and 5")
     var springExp: Int? = null,
 
     @Column(name = "rdb_exp")
     @NotNull
-    @Min(0, message = "The value must be between 1 and 5")
+    @Min(1, message = "The value must be between 1 and 5")
     @Max(5, message = "The value must be between 1 and 5")
     var rdbExp: Int? = null,
 
     @Column(name = "programming_exp")
     @NotNull
-    @Min(0, message = "The value must be between 1 and 5")
+    @Min(1, message = "The value must be between 1 and 5")
     @Max(5, message = "The value must be between 1 and 5")
     var programmingExp: Int? = null,
 

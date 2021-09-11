@@ -7,6 +7,7 @@ import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
 import com.wafflestudio.seminar.domain.survey.repository.SurveyResponseRepository
 import com.wafflestudio.seminar.domain.survey.service.SurveyResponseService
 import org.modelmapper.ModelMapper
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -55,6 +56,8 @@ class SurveyResponseController(
             somethingToSay = body.somethingToSay
         )
         surveyResponseRepository.save(newSurvey)
+        // 이 사이에 spring rdb programming에 관한 범위 제한을 넣어줘야하나? return try?
+        // 201 status code도 삽입해주어야함.
         return SurveyResponseDto.Response(id = newSurvey.id, os = newSurvey.os, springExp = newSurvey.springExp, rdbExp = newSurvey.rdbExp,
         programmingExp = newSurvey.programmingExp, major = newSurvey.major, grade = newSurvey.grade, backendReason = newSurvey.backendReason,
         waffleReason = newSurvey.waffleReason, somethingToSay = newSurvey.somethingToSay, timestamp = newSurvey.timestamp)
