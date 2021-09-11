@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.wafflestudio.seminar.domain.os.dto.OperatingSystemDto
 import com.wafflestudio.seminar.domain.os.model.OperatingSystem
 import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
+import com.wafflestudio.seminar.domain.user.model.User
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.JoinColumn
@@ -15,17 +16,19 @@ import javax.validation.constraints.NotNull
 
 class SurveyResponseDto {
     data class Response(
-        var id: Long?,
-        var os: OperatingSystem?,
-        var springExp: Int?,
-        var rdbExp: Int?,
-        var programmingExp: Int?,
-        var major: String?,
-        var grade: String?,
-        var backendReason: String?,
-        var waffleReason: String?,
-        var somethingToSay: String?,
-        var timestamp: LocalDateTime?
+        var id: Long? = 0,
+        var os: OperatingSystem? = null,
+        var springExp: Int? = 0,
+        var rdbExp: Int? = 0,
+        var programmingExp: Int? = 0,
+        var major: String? = "",
+        var grade: String? = "",
+        var backendReason: String? = "",
+        var waffleReason: String? = "",
+        var somethingToSay: String? = "",
+        var timestamp: LocalDateTime? = null,
+        var user: User? = null
+//    )
     ) {
         constructor(surveyResponse: SurveyResponse) : this(
             surveyResponse.id,
@@ -38,7 +41,8 @@ class SurveyResponseDto {
             surveyResponse.backendReason,
             surveyResponse.waffleReason,
             surveyResponse.somethingToSay,
-            surveyResponse.timestamp
+            surveyResponse.timestamp,
+            surveyResponse.user
         )
     }
 
