@@ -59,10 +59,11 @@ class SurveyResponseController(
     ): ResponseEntity<SurveyResponse> {
         // TODO: status code 받을 수 있게끔 API 생성
         if (bindingResult.hasErrors()){
-            return ResponseEntity.badRequest().build()
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
         }
         return try {
             val newSurvey = SurveyResponse(
+                user = userService.getUserInfoByUserId(userId),
                 os = body.os,
                 springExp = body.springExp,
                 rdbExp = body.rdbExp,
@@ -71,15 +72,14 @@ class SurveyResponseController(
                 grade = body.grade,
                 backendReason = body.backendReason,
                 waffleReason = body.waffleReason,
-                somethingToSay = body.somethingToSay,
-                user = userService.getUserInfoByUserId(userId)
+                somethingToSay = body.somethingToSay
             )
             surveyResponseRepository.save(newSurvey)
             ResponseEntity(newSurvey, HttpStatus.CREATED)
         } catch (e: OsNotFoundException) {
-            ResponseEntity.notFound().build()
+            ResponseEntity(HttpStatus.NOT_FOUND)
         } catch (e: UserNotFoundException) {
-            ResponseEntity.notFound().build()
+            ResponseEntity(HttpStatus.NOT_FOUND)
         }
 
 
