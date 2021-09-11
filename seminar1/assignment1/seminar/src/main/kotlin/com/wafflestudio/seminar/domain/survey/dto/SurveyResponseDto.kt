@@ -45,6 +45,11 @@ class SurveyResponseDto {
     // TODO: 아래 두 DTO 완성
     data class CreateRequest(
         var id: Long?,
+
+        // OS의 이름을 받아주기 위해서
+        // var os: OperatingSystem? 이 아닌
+        // var os: String 으로 변환.
+        // constructor에 대한 오류가 있어서 아예 주석처리로 삭제해버림.
         @field:NotNull
         var os: String,
         @field:NotNull
