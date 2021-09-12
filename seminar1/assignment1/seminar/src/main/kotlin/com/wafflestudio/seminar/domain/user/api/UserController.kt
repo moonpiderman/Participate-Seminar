@@ -22,15 +22,6 @@ class UserController(
     private val userRepository: UserRepository,
     private val modelMapper: ModelMapper
 ) {
-
-//    @PostMapping("/")
-//    fun createUser(@ModelAttribute @RequestBody @Valid body: UserDto.CreateRequest): UserDto.Response {
-////        user.username = body.username
-////        user.email = body.email
-//        val newUser = User(username = body.username, email = body.email)
-//        userRepository.save(newUser)
-//        return UserDto.Response(id = newUser.id, username = newUser.username, email = newUser.email)
-//    }
     @PostMapping("/")
     fun createUser(@ModelAttribute @Valid body: UserDto.CreateRequest, bindingResult: BindingResult) : ResponseEntity<User>{
         if (bindingResult.hasErrors()) {
@@ -47,6 +38,7 @@ class UserController(
             ResponseEntity(HttpStatus.BAD_REQUEST)
         }
     }
+
 
     @GetMapping("/me/")
 //    fun userMe(@RequestHeader("User-Id") userId: Long): UserDto.Response {
