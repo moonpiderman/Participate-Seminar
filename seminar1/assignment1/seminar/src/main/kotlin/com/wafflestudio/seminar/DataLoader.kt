@@ -4,6 +4,8 @@ import com.wafflestudio.seminar.domain.os.model.OperatingSystem
 import com.wafflestudio.seminar.domain.os.repository.OperatingSystemRepository
 import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
 import com.wafflestudio.seminar.domain.survey.repository.SurveyResponseRepository
+import com.wafflestudio.seminar.domain.user.model.User
+import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.core.io.ClassPathResource
@@ -16,6 +18,7 @@ import java.time.format.DateTimeFormatter
 
 @Component
 class DataLoader(
+    private val userRepository: UserRepository,
     private val operatingSystemRepository: OperatingSystemRepository,
     private val surveyResponseRepository: SurveyResponseRepository,
 ) : ApplicationRunner {
@@ -28,6 +31,12 @@ class DataLoader(
         operatingSystemRepository.save(windows)
         operatingSystemRepository.save(macos)
         operatingSystemRepository.save(linux)
+
+        // user
+        val dodin = User(username = "dodin", email = "dodin@gmail.com")
+        val moonhulk = User(username = "moonhulk", email = "moonhulk@gmail.com")
+        userRepository.save(dodin)
+        userRepository.save(moonhulk)
 
         BufferedReader(FileReader(ClassPathResource("data/example_surveyresult.tsv").file)).use { br ->
             br.lines().forEach {
