@@ -1,38 +1,31 @@
 package com.wafflestudio.seminar.domain.survey.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.wafflestudio.seminar.domain.os.dto.OperatingSystemDto
-import com.wafflestudio.seminar.domain.os.model.OperatingSystem
 import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
-import com.wafflestudio.seminar.domain.user.model.User
+import com.wafflestudio.seminar.domain.user.dto.UserDto
 import java.time.LocalDateTime
-import javax.persistence.Column
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 class SurveyResponseDto {
     data class Response(
-        var id: Long? = 0,
-        var os: OperatingSystem? = null,
-        var springExp: Int? = 0,
-        var rdbExp: Int? = 0,
-        var programmingExp: Int? = 0,
-        var major: String? = "",
-        var grade: String? = "",
-        var backendReason: String? = "",
-        var waffleReason: String? = "",
-        var somethingToSay: String? = "",
-        var timestamp: LocalDateTime? = null,
-        var user: User? = null
-//    )
+        val id: Long,
+        val os: OperatingSystemDto.Response,
+        val user: UserDto.Response?,
+        val springExp: Int,
+        val rdbExp: Int,
+        val programmingExp: Int,
+        val major: String,
+        val grade: String,
+        val backendReason: String?,
+        val waffleReason: String?,
+        val somethingToSay: String?,
+        val timestamp: LocalDateTime
     ) {
         constructor(surveyResponse: SurveyResponse) : this(
             surveyResponse.id,
-            surveyResponse.os,
+            OperatingSystemDto.Response(surveyResponse.os),
+            surveyResponse.user?.let { UserDto.Response(it) },
             surveyResponse.springExp,
             surveyResponse.rdbExp,
             surveyResponse.programmingExp,
@@ -41,58 +34,31 @@ class SurveyResponseDto {
             surveyResponse.backendReason,
             surveyResponse.waffleReason,
             surveyResponse.somethingToSay,
-            surveyResponse.timestamp,
-            surveyResponse.user
+            surveyResponse.timestamp
         )
     }
 
-    // TODO: 아래 두 DTO 완성
     data class CreateRequest(
-        var id: Long?,
+        @field:NotBlank
+        val os: String,
 
-        // OS의 이름을 받아주기 위해서
-        // var os: OperatingSystem? 이 아닌
-        // var os: String 으로 변환.
-        // constructor에 대한 오류가 있어서 아예 주석처리로 삭제해버림.
         @field:NotNull
-        var os: String,
-        @field:NotNull
-        @field:Min(1)
-        @field:Max(5)
-        var springExp: Int?,
-        @field:NotNull
-        @field:Min(1)
-        @field:Max(5)
-        var rdbExp: Int?,
-        @field:NotNull
-        @field:Min(1)
-        @field:Max(5)
-        var programmingExp: Int?,
-        var major: String?,
-        var grade: String?,
-        var backendReason: String?,
-        var waffleReason: String?,
-        var somethingToSay: String?,
-        var timestamp: LocalDateTime?
-    )
-//    ) {
-//        constructor(surveyResponse: SurveyResponse) : this(
-//            surveyResponse.id,
-//            surveyResponse.os,
-//            surveyResponse.springExp,
-//            surveyResponse.rdbExp,
-//            surveyResponse.programmingExp,
-//            surveyResponse.major,
-//            surveyResponse.grade,
-//            surveyResponse.backendReason,
-//            surveyResponse.waffleReason,
-//            surveyResponse.somethingToSay,
-//            surveyResponse.timestamp
-//        )
-//    }
+        val springExp: Int,
 
-    data class ModifyRequest(
-        var something: String? = ""
-        // 예시 - 지우고 새로 생성
+        @field:NotNull
+        val rdbExp: Int,
+
+        @field:NotNull
+        val programmingExp: Int,
+
+        @field:NotBlank
+        val major: String,
+
+        @field:NotBlank
+        val grade: String,
+
+        val backendReason: String? = null,
+        val waffleReason: String? = null,
+        val somethingToSay: String? = null,
     )
 }

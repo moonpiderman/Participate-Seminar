@@ -4,8 +4,6 @@ import com.wafflestudio.seminar.domain.os.model.OperatingSystem
 import com.wafflestudio.seminar.domain.os.repository.OperatingSystemRepository
 import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
 import com.wafflestudio.seminar.domain.survey.repository.SurveyResponseRepository
-import com.wafflestudio.seminar.domain.user.model.User
-import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.core.io.ClassPathResource
@@ -18,7 +16,6 @@ import java.time.format.DateTimeFormatter
 
 @Component
 class DataLoader(
-    private val userRepository: UserRepository,
     private val operatingSystemRepository: OperatingSystemRepository,
     private val surveyResponseRepository: SurveyResponseRepository,
 ) : ApplicationRunner {
@@ -28,27 +25,23 @@ class DataLoader(
         val macos =
             OperatingSystem(name = "MacOS", price = 300000, description = "Most favorite OS of Seminar Instructors")
         val linux = OperatingSystem(name = "Linux", price = 0, description = "Linus Benedict Torvalds")
+        val others = OperatingSystem(name = "Others", price = 0, description = "")
         operatingSystemRepository.save(windows)
         operatingSystemRepository.save(macos)
         operatingSystemRepository.save(linux)
-
-        // user
-        val dodin = User(username = "dodin", email = "dodin@gmail.com")
-        val moonhulk = User(username = "moonhulk", email = "moonhulk@gmail.com")
-        userRepository.save(dodin)
-        userRepository.save(moonhulk)
 
         BufferedReader(FileReader(ClassPathResource("data/example_surveyresult.tsv").file)).use { br ->
             br.lines().forEach {
                 val rawSurveyResponse = it.split("\t")
                 val newSurveyResponse = SurveyResponse(
                     timestamp = LocalDateTime.parse(rawSurveyResponse[0], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                    os = operatingSystemRepository.findByNameEquals(rawSurveyResponse[1]),
+                    os = operatingSystemRepository.findByNameEquals(rawSurveyResponse[1]) ?: others,
                     springExp = rawSurveyResponse[2].toInt(),
                     rdbExp = rawSurveyResponse[3].toInt(),
                     programmingExp = rawSurveyResponse[4].toInt(),
                     major = rawSurveyResponse[5],
-                    grade = rawSurveyResponse[6]
+                    grade = rawSurveyResponse[6],
+                    user = null,
                 )
                 surveyResponseRepository.save(newSurveyResponse)
             }

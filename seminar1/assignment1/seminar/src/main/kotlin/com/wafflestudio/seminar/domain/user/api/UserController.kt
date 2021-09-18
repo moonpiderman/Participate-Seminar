@@ -1,58 +1,28 @@
 package com.wafflestudio.seminar.domain.user.api
 
-import com.wafflestudio.seminar.domain.survey.dto.SurveyResponseDto
-import com.wafflestudio.seminar.domain.user.dto.UserDto
-import com.wafflestudio.seminar.domain.user.exception.UserEmailDuplicate
-import com.wafflestudio.seminar.domain.user.exception.UserNotFoundException
 import com.wafflestudio.seminar.domain.user.model.User
-import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import com.wafflestudio.seminar.domain.user.service.UserService
-import org.modelmapper.ModelMapper
-import org.springframework.http.HttpStatus
+import com.wafflestudio.seminar.domain.user.dto.UserDto
+import com.wafflestudio.seminar.global.auth.CurrentUser
+import com.wafflestudio.seminar.global.auth.JwtTokenProvider
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 class UserController(
-//    private val user: User,
     private val userService: UserService,
-    private val userRepository: UserRepository,
-    private val modelMapper: ModelMapper
+    private val jwtTokenProvider: JwtTokenProvider
 ) {
     @PostMapping("/")
-    fun createUser(@ModelAttribute @Valid body: UserDto.CreateRequest, bindingResult: BindingResult) : ResponseEntity<User>{
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity(HttpStatus.BAD_REQUEST)
-        }
-        return try {
-            val newUser = User(
-                username = body.username,
-                email = body.email
-            )
-            userRepository.save(newUser)
-            ResponseEntity(newUser, HttpStatus.CREATED)
-        } catch (e: UserEmailDuplicate) {
-            ResponseEntity(HttpStatus.BAD_REQUEST)
-        }
+    fun signup(@Valid @RequestBody signupRequest: UserDto.SignupRequest): ResponseEntity<UserDto.Response> {
+        val user = userService.signup(signupRequest)
+        return ResponseEntity.noContent().header("Authentication", jwtTokenProvider.generateToken(user.email)).build()
     }
 
-
     @GetMapping("/me/")
-//    fun userMe(@RequestHeader("User-Id") userId: Long): UserDto.Response {
-//        // 입력받은 id 와 같은 id 가 DB에 있는 데이터와 같은 것의 response를 불러오기.
-//        val userInfo = userService.getUserInfoByUserId(userId)
-//        return UserDto.Response(id = userId, username = userInfo!!.username, email = userInfo.email)
-//    }
-    fun userMe(@RequestHeader("User-Id") userId: Long): ResponseEntity<UserDto.Response> {
-        return try{
-            val userInfo = userService.getUserInfoByUserId(userId)
-            val responseBody = modelMapper.map(userInfo, UserDto.Response::class.java)
-            ResponseEntity.ok(responseBody)
-        } catch (e: UserNotFoundException) {
-            ResponseEntity(HttpStatus.NOT_FOUND)
-        }
+    fun getCurrentUser(@CurrentUser user: User): UserDto.Response {
+        return UserDto.Response(user)
     }
 }

@@ -1,10 +1,8 @@
 package com.wafflestudio.seminar.domain.os.service
 
-import com.wafflestudio.seminar.domain.os.dto.OperatingSystemDto
 import com.wafflestudio.seminar.domain.os.exception.OsNotFoundException
 import com.wafflestudio.seminar.domain.os.model.OperatingSystem
 import com.wafflestudio.seminar.domain.os.repository.OperatingSystemRepository
-import org.modelmapper.ModelMapper
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -16,13 +14,7 @@ class OperatingSystemService(
         return operatingSystemRepository.findAll()
     }
 
-    // os id로
     fun getOperatingSystemById(id: Long): OperatingSystem {
         return operatingSystemRepository.findByIdOrNull(id) ?: throw OsNotFoundException()
-    }
-
-    // os name으로
-    fun getOperatingSystemByName(system: String): OperatingSystem {
-        return operatingSystemRepository.findByNameEquals(system) ?: throw OsNotFoundException()
     }
 }
