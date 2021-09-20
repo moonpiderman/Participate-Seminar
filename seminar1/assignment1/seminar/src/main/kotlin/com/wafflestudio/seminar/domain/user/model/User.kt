@@ -1,6 +1,8 @@
 package com.wafflestudio.seminar.domain.user.model
 
 import com.wafflestudio.seminar.domain.model.BaseEntity
+import org.springframework.data.annotation.CreatedDate
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -17,6 +19,10 @@ class User(
 
     @field:NotBlank
     val password: String,
+
+    @Column
+    @field:CreatedDate
+    val date_joined: LocalDateTime = LocalDateTime.now(),
 
     @Column
     @field:NotNull
