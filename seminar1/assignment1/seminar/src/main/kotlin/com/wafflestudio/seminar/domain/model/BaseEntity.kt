@@ -13,9 +13,9 @@ open class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open val id: Long = 0
 
-    @CreatedDate
-    open val created_at: LocalDateTime? = null
-
-    @LastModifiedDate
-    open val updated_at: LocalDateTime? = null
+//    @CreatedDate
+//    open val created_at: LocalDateTime? = null
+//
+//    @LastModifiedDate
+//    open val updated_at: LocalDateTime? = null
 }
