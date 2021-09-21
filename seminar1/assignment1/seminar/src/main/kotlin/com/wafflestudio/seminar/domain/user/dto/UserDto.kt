@@ -28,6 +28,8 @@ class UserDto {
         @field:NotBlank
         val name: String,
         @field:NotBlank
-        val password: String
+        val password: String,
+        @field:NotBlank
+        val role: String
     )
 }

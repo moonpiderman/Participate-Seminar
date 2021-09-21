@@ -20,12 +20,12 @@ class User(
     @field:NotBlank
     val password: String,
 
+    // requset 시에만 사용하는 필드인가..? 아닐텐데...
+    @Column
+    @field:NotNull
+    val roles: String,
+
     @Column
     @field:CreatedDate
     val date_joined: LocalDateTime = LocalDateTime.now(),
-
-    @Column
-    @field:NotNull
-    val roles: String = "",
-
     ) : BaseEntity()
