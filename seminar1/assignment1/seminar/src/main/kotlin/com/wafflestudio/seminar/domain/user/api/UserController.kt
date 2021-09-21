@@ -29,6 +29,12 @@ class UserController(
         return UserDto.Response(user)
     }
 
+    @GetMapping("/{id}/")
+    fun getIdentityUser(@PathVariable("id") id: Long): UserDto.Response {
+        val userReponse = userService.getUserResponseId(id)
+        return UserDto.Response(userReponse)
+    }
+
     @PostMapping("/participant/")
     fun userParticipant(@Valid @RequestBody participantRequest: ParticipantDto.ParticipantRequest): ResponseEntity<ParticipantDto.Response> {
         // role 이 participant도 아니고, instructor 도 아니라면 error 발생. (400)

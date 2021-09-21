@@ -4,7 +4,9 @@ import com.wafflestudio.seminar.domain.user.model.User
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import com.wafflestudio.seminar.domain.user.dto.UserDto
 import com.wafflestudio.seminar.domain.user.exception.UserAlreadyExistsException
+import com.wafflestudio.seminar.domain.user.exception.UserNotFoundException
 import com.wafflestudio.seminar.domain.user.exception.UserRoleException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -18,5 +20,9 @@ class UserService(
         if ((signupRequest.role != "participant") && (signupRequest.role != "instructor")) throw UserRoleException()
         val encodedPassword = passwordEncoder.encode(signupRequest.password)
         return userRepository.save(User(signupRequest.email, signupRequest.name, encodedPassword, signupRequest.role))
+    }
+
+    fun getUserResponseId(id: Long): User {
+        return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException()
     }
 }
