@@ -14,10 +14,10 @@ import javax.validation.constraints.NotNull
 @Table(name = "participant")
 class ParticipantProfile (
     @Column
-    val university: String = "",
+    val university: String? = "",
 
-    @field:NotBlank
-    val accepted: Boolean = true,
+    @field:NotNull
+    val accepted: Boolean? = true,
 
     // seminars
 
@@ -27,8 +27,9 @@ class ParticipantProfile (
 
     @LastModifiedDate
     @Column(name = "updated_at")
-    val updatedAt: LocalDateTime? = null,
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 
+    // fetch = FetchType.EAGER
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(referencedColumnName = "id")
     val seminarParticipant: SeminarParticipant? = null

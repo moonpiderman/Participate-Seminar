@@ -7,6 +7,7 @@ import com.wafflestudio.seminar.domain.user.dto.ParticipantDto
 import com.wafflestudio.seminar.domain.user.service.ParticipantService
 import com.wafflestudio.seminar.global.auth.CurrentUser
 import com.wafflestudio.seminar.global.auth.JwtTokenProvider
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -35,10 +36,16 @@ class UserController(
         return UserDto.Response(userReponse)
     }
 
+    // participant 인지 instructor 인지 알 수 없으니 request의 값들이 must일 필요는 없다.
+    // 값을 제한해주는 것을 막자.
+//    @PutMapping("/me/")
+//    fun modifyMe(@Valid @RequestBody)
+
     @PostMapping("/participant/")
     fun userParticipant(@Valid @RequestBody participantRequest: ParticipantDto.ParticipantRequest): ResponseEntity<ParticipantDto.Response> {
-        // role 이 participant도 아니고, instructor 도 아니라면 error 발생. (400)
-        participantService.enrollParticipant(participantRequest)
-        return ResponseEntity.noContent().build()
+        val partInfo = participantService.enrollParticipant(participantRequest)
+        val partInfoResponse = ParticipantDto.Response(partInfo)
+//        return ResponseEntity.noContent().build()
+        return ResponseEntity(partInfoResponse, HttpStatus.CREATED)
     }
 }

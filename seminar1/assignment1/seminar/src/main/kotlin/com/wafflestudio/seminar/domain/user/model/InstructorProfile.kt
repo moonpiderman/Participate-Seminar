@@ -11,10 +11,10 @@ import javax.persistence.*
 @Table(name = "instructor")
 class InstructorProfile (
     @Column
-    val company: String = "",
+    val company: String? = "",
 
     @Column
-    val year: Long? = null,
+    val year: Long? = 0,
 
     // charge
     // 담당하는 세미나
@@ -29,6 +29,6 @@ class InstructorProfile (
 
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(referencedColumnName = "id")
-    val seminarInstructor: SeminarInstructor
+    val seminarInstructor: SeminarInstructor? = null
 
 ) : BaseEntity()

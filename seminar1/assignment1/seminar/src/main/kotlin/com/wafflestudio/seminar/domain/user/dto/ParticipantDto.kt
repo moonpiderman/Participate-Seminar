@@ -7,8 +7,9 @@ import java.time.LocalDateTime
 class ParticipantDto {
     data class Response(
         val id: Long,
-        val university: String,
-        val accepted: Boolean,
+        val university: String?,
+        val accepted: Boolean? = true,
+        // seminars
         var created_at: LocalDateTime,
         val updated_at: LocalDateTime?
     ) {

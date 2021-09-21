@@ -13,5 +13,4 @@ class SeminarParticipant (
     // ParticipantProfile 에서 link 해줄 부분이 필요하다.
     @OneToMany(cascade = [CascadeType.PERSIST], mappedBy = "seminarParticipant")
     val participantProfile: List<ParticipantProfile> = listOf()
-
 ) : BaseEntity()
