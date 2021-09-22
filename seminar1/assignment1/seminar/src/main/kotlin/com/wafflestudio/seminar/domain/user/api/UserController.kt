@@ -22,7 +22,7 @@ class UserController(
     @PostMapping("/")
     fun signup(@Valid @RequestBody signupRequest: UserDto.SignupRequest): ResponseEntity<UserDto.Response> {
         val user = userService.signup(signupRequest)
-        val enroll = userService.enrollRole(user, signupRequest)
+        userService.enrollRole(user, signupRequest)
         return ResponseEntity.noContent().header("Authentication", jwtTokenProvider.generateToken(user.email)).build()
     }
 
@@ -33,8 +33,8 @@ class UserController(
 
     @GetMapping("/{id}/")
     fun getIdentityUser(@PathVariable("id") id: Long): UserDto.Response {
-        val userReponse = userService.getUserResponseId(id)
-        return UserDto.Response(userReponse)
+        val userResponse = userService.getUserResponseId(id)
+        return UserDto.Response(userResponse)
     }
 
     // participant 인지 instructor 인지 알 수 없으니 request의 값들이 must일 필요는 없다.

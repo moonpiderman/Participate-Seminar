@@ -4,6 +4,7 @@ import com.wafflestudio.seminar.domain.os.model.OperatingSystem
 import com.wafflestudio.seminar.domain.os.repository.OperatingSystemRepository
 import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
 import com.wafflestudio.seminar.domain.survey.repository.SurveyResponseRepository
+import com.wafflestudio.seminar.domain.user.model.User
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.core.io.ClassPathResource
@@ -29,6 +30,7 @@ class DataLoader(
         operatingSystemRepository.save(windows)
         operatingSystemRepository.save(macos)
         operatingSystemRepository.save(linux)
+
 
         BufferedReader(FileReader(ClassPathResource("data/example_surveyresult.tsv").file)).use { br ->
             br.lines().forEach {
