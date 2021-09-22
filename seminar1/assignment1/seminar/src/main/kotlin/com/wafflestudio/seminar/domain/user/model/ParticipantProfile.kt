@@ -29,6 +29,12 @@ class ParticipantProfile (
     @Column(name = "updated_at")
     val updatedAt: LocalDateTime = LocalDateTime.now(),
 
+    // user_id에 관한 필드가 존재해야한다.
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    val user: User? = null,
+
+
     // fetch = FetchType.EAGER
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(referencedColumnName = "id")
