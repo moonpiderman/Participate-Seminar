@@ -4,6 +4,7 @@ import com.wafflestudio.seminar.domain.seminar.dto.SeminarDto
 import com.wafflestudio.seminar.domain.seminar.service.SeminarService
 import com.wafflestudio.seminar.domain.user.model.User
 import com.wafflestudio.seminar.global.auth.CurrentUser
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -21,7 +22,7 @@ class SeminarController (
     // service 단에서 CurrentUser 의 role 이 instructor 인지 파악하자.
     @PostMapping("/")
     fun createSeminar(@CurrentUser user: User, @Valid @RequestBody seminarRequest: SeminarDto.Request): ResponseEntity<SeminarDto.Response> {
-        seminarService.checkUserRole(user, seminarRequest)
-        return ResponseEntity.noContent().build()
+        val newSeminar = seminarService.checkUserRole(user, seminarRequest)
+        return ResponseEntity(SeminarDto.Response(newSeminar), HttpStatus.CREATED)
     }
 }
