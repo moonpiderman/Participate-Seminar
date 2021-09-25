@@ -1,6 +1,8 @@
 package com.wafflestudio.seminar.domain.seminar.model
 
 import com.wafflestudio.seminar.domain.model.BaseEntity
+import com.wafflestudio.seminar.domain.user.model.InstructorProfile
+import com.wafflestudio.seminar.domain.user.model.ParticipantProfile
 import org.hibernate.annotations.UpdateTimestamp
 import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDateTime
@@ -34,11 +36,6 @@ class Seminar (
     @Column(name = "joined_at")
     val joinedAt: LocalDateTime = LocalDateTime.now(),
 
-    @Column(name = "is_active")
-    val isActive: Boolean = true,
-
-    @UpdateTimestamp
-    @Column(name = "dropped_at")
-    val droppedAt: LocalDateTime? = null
-
+    @OneToMany(mappedBy = "seminar")
+    val instructors: List<InstructorProfile> = listOf(),
 ) : BaseEntity()

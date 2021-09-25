@@ -13,17 +13,20 @@ class UserDto {
         val id: Long,
         val email: String,
         val name: String,
-        val date_joined: LocalDateTime
+        val date_joined: LocalDateTime,
         // participant_profile
-//        val participant_profile: ParticipantDto.Response,
+        val participant_profile: ParticipantDto.Response?,
         // instructor_profile
+        val instructor_profile: InstructorDto.Response?
     ) {
         constructor(user: User) : this(
             id = user.id,
             email = user.email,
             name = user.name,
-            date_joined = user.date_joined
-//            participant_profile =
+            date_joined = user.date_joined,
+            participant_profile = user.participantProfiles?.let { ParticipantDto.Response(it)},
+            instructor_profile = user.instructorProfile?.let { InstructorDto.Response(it) }
+
         )
     }
 
@@ -44,6 +47,26 @@ class UserDto {
 
         @field:NotNull
         val company: String? = "",
+        @field:NotNull
+        val year: Long? = 0
+    )
+
+    data class ModifyRequest(
+        @field:NotNull
+        val email: String? = null,
+
+        @field:NotNull
+        val name: String? = null,
+
+        @field:NotNull
+        val password: String? = null,
+
+        @field:NotNull
+        val university: String? = null,
+
+        @field:NotNull
+        val company: String? = null,
+
         @field:NotNull
         val year: Long? = 0
     )

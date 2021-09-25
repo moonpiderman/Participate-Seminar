@@ -39,14 +39,19 @@ class UserController(
 
     // participant 인지 instructor 인지 알 수 없으니 request의 값들이 must일 필요는 없다.
     // 값을 제한해주는 것을 막자.
+
+    // 참여자인 User 는 university 를 수정할 수 있다.
+    // 진행자인 User 는 company 와 year 를 수정할 수 있다.
+    // 참여자 혹은 진행자인 User 는 Participant 의 accepted 를 제외하고 모든 정보를 수정할 수 있다.
 //    @PutMapping("/me/")
-//    fun modifyMe(@Valid @RequestBody)
+//    fun modifyUser(@CurrentUser user: User, @Valid @RequestBody modifyRequest: UserDto.ModifyRequest): UserDto.Response {
+//        val editUserInfo = userService.modifyMe(user, modifyRequest)
+//    }
 
     @PostMapping("/participant/")
-    fun userParticipant(@Valid @RequestBody participantRequest: ParticipantDto.ParticipantRequest): ResponseEntity<ParticipantDto.Response> {
-        val partInfo = participantService.enrollParticipant(participantRequest)
+    fun userParticipant(@CurrentUser user: User, @Valid @RequestBody participantRequest: ParticipantDto.ParticipantRequest): ResponseEntity<ParticipantDto.Response> {
+        val partInfo = participantService.enrollParticipant(user, participantRequest)
         val partInfoResponse = ParticipantDto.Response(partInfo)
-//        return ResponseEntity.noContent().build()
         return ResponseEntity(partInfoResponse, HttpStatus.CREATED)
     }
 }

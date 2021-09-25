@@ -28,4 +28,10 @@ class User(
     @Column
     @field:CreatedDate
     val date_joined: LocalDateTime = LocalDateTime.now(),
-    ) : BaseEntity()
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    val instructorProfile: InstructorProfile? = null,
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    val participantProfiles: ParticipantProfile? = null
+) : BaseEntity()

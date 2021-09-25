@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.domain.user.model
 
 import com.wafflestudio.seminar.domain.model.BaseEntity
+import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
 import net.bytebuddy.implementation.bind.annotation.Default
 import org.springframework.data.annotation.CreatedDate
@@ -34,9 +35,7 @@ class ParticipantProfile (
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: User? = null,
 
-
-    // fetch = FetchType.EAGER
-    @ManyToOne(cascade = [CascadeType.PERSIST])
-    @JoinColumn(referencedColumnName = "id")
-    val seminarParticipant: SeminarParticipant? = null
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "participant_profile_id")
+    val seminarParticipant : List<SeminarParticipant> = listOf()
 ) : BaseEntity()
