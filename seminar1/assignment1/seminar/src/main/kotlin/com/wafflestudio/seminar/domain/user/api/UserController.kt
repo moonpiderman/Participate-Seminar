@@ -43,10 +43,13 @@ class UserController(
     // 참여자인 User 는 university 를 수정할 수 있다.
     // 진행자인 User 는 company 와 year 를 수정할 수 있다.
     // 참여자 혹은 진행자인 User 는 Participant 의 accepted 를 제외하고 모든 정보를 수정할 수 있다.
-//    @PutMapping("/me/")
-//    fun modifyUser(@CurrentUser user: User, @Valid @RequestBody modifyRequest: UserDto.ModifyRequest): UserDto.Response {
-//        val editUserInfo = userService.modifyMe(user, modifyRequest)
-//    }
+
+
+    @PutMapping("/me/")
+    fun modifyUser(@CurrentUser user: User, @Valid @RequestBody modifyRequest: UserDto.ModifyRequest): UserDto.Response {
+        var editUserInfo = userService.modifyMe(user, modifyRequest)
+        return UserDto.Response(editUserInfo)
+    }
 
     @PostMapping("/participant/")
     fun userParticipant(@CurrentUser user: User, @Valid @RequestBody participantRequest: ParticipantDto.ParticipantRequest): ResponseEntity<ParticipantDto.Response> {

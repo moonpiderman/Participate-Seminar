@@ -52,14 +52,14 @@ class UserDto {
     )
 
     data class ModifyRequest(
-        @field:NotNull
-        val email: String? = null,
+//        @field:NotNull
+//        val email: String? = null,
 
-        @field:NotNull
-        val name: String? = null,
+//        @field:NotNull
+//        val name: String? = null,
 
-        @field:NotNull
-        val password: String? = null,
+//        @field:NotNull
+//        val password: String? = null,
 
         @field:NotNull
         val university: String? = null,

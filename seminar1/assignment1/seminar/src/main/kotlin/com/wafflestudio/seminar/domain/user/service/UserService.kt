@@ -20,7 +20,9 @@ class UserService(
     private val passwordEncoder: PasswordEncoder,
 
     private val participantRepository: ParticipantRepository,
-    private val instructorRepository: InstructorRepository
+    private val instructorRepository: InstructorRepository,
+
+    private val participantService: ParticipantService,
 ) {
     fun signup(signupRequest: UserDto.SignupRequest): User {
         if (userRepository.existsByEmail(signupRequest.email)) throw UserAlreadyExistsException()
@@ -55,9 +57,15 @@ class UserService(
     }
 
     // modify function
-//    fun modifyMe(user: User, modifyRequest: UserDto.ModifyRequest): User {
-//        return userRepository.save(User())
-//    }
+    fun modifyMe(user: User, modifyRequest: UserDto.ModifyRequest): User {
+        // 현재 user의 정보를 save 해주어야한다.
+        // 그러지말고 null 이라면, 혹은 "" 이라면 변동없게끔 해줘야한다. 우선 이게 되는지 체크하자.
+        // userId 를 통해 participant 정보를 가져올 participantService 를 생성해볼까?
+
+        var updateUserInfo = participantService.modifyParticipantInfo(modifyRequest)
+        user.participantProfiles = updateUserInfo
+        return user
+    }
 
     fun getUserResponseId(id: Long): User {
         return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException()

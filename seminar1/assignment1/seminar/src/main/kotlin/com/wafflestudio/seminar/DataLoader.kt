@@ -13,10 +13,13 @@ import com.wafflestudio.seminar.domain.user.model.User
 import com.wafflestudio.seminar.domain.user.repository.InstructorRepository
 import com.wafflestudio.seminar.domain.user.repository.ParticipantRepository
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
+import com.wafflestudio.seminar.domain.user.service.ParticipantService
 import com.wafflestudio.seminar.global.auth.JwtTokenProvider
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.core.io.ClassPathResource
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.io.BufferedReader
 import java.io.FileReader
@@ -34,6 +37,7 @@ class DataLoader(
     private val instructorRepository: InstructorRepository,
     private val seminarRepository: SeminarRepository,
     private val jwtTokenProvider: JwtTokenProvider,
+    private val participantService: ParticipantService,
 ) : ApplicationRunner {
     // 어플리케이션 동작 시 실행
     override fun run(args: ApplicationArguments) {

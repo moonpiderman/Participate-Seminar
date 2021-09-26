@@ -15,6 +15,9 @@ class SeminarParticipant(
     @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
     val participantProfile: ParticipantProfile,
 
+    @Column(name = "joined_at")
+    val joinedAt: LocalDateTime = LocalDateTime.now(),
+
     val isActive: Boolean,
 
     @Column(nullable = true)

@@ -21,7 +21,10 @@ class SeminarController (
     // post seminar 가 가능해진다.
     // service 단에서 CurrentUser 의 role 이 instructor 인지 파악하자.
     @PostMapping("/")
-    fun createSeminar(@CurrentUser user: User, @Valid @RequestBody seminarRequest: SeminarDto.Request): ResponseEntity<SeminarDto.Response> {
+    fun createSeminar(
+        @CurrentUser user: User,
+        @Valid @RequestBody seminarRequest: SeminarDto.Request
+    ): ResponseEntity<SeminarDto.Response> {
         val newSeminar = seminarService.checkUserRole(user, seminarRequest)
         return ResponseEntity(SeminarDto.Response(newSeminar), HttpStatus.CREATED)
     }

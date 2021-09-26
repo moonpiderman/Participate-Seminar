@@ -30,8 +30,8 @@ class User(
     val date_joined: LocalDateTime = LocalDateTime.now(),
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-    val instructorProfile: InstructorProfile? = null,
+    var instructorProfile: InstructorProfile? = null,
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-    val participantProfiles: ParticipantProfile? = null
+    var participantProfiles: ParticipantProfile? = null
 ) : BaseEntity()

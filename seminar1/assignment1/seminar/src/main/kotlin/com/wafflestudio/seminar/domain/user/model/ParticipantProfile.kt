@@ -37,5 +37,5 @@ class ParticipantProfile (
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_profile_id")
-    val seminarParticipant : List<SeminarParticipant> = listOf()
+    val seminarParticipant : List<SeminarParticipant>? = listOf()
 ) : BaseEntity()
