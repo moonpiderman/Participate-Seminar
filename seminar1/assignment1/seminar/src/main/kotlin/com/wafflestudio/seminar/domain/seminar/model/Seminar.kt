@@ -39,4 +39,6 @@ class Seminar (
     @OneToMany(mappedBy = "seminar")
     val instructors: MutableList<InstructorProfile> = mutableListOf(),
 
+    @OneToMany(mappedBy = "id")
+    val seminarParticipant: MutableList<SeminarParticipant> = mutableListOf()
 ) : BaseEntity()

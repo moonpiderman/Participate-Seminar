@@ -2,7 +2,6 @@ package com.wafflestudio.seminar.domain.seminar.dto
 
 import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import com.wafflestudio.seminar.domain.user.dto.InstructorsProfileForSeminarDto
-import com.wafflestudio.seminar.domain.user.dto.ParticipantProfileForSeminarDto
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalTime
@@ -21,7 +20,7 @@ class SeminarDto {
     //  instructors
         val instructors: List<InstructorsProfileForSeminarDto.Response>,
     //  participants
-        val participants: List<ParticipantProfileForSeminarDto.Response>,
+        val participants: List<SeminarParticipantDto.ResponseForSeminarParticipants>,
     ) {
         constructor(seminar: Seminar, userRepository: UserRepository) : this(
             id = seminar.id,
@@ -33,27 +32,12 @@ class SeminarDto {
             instructors = seminar.instructors.map {
                     it -> InstructorsProfileForSeminarDto.Response(userRepository.findUserByEmail(it.user!!.email))
             },
-            participants = seminar.instructors.map {
-                it -> ParticipantProfileForSeminarDto.Response(userRepository.findUserByEmail(it.user!!.email))
+            participants = seminar.seminarParticipant.map {it ->
+                SeminarParticipantDto.ResponseForSeminarParticipants(
+                    userRepository.findUserByEmail(it.participantProfile.user!!.email), it)
             }
         )
     }
-
-//    data class ResponseForSeminarOfParticipant(
-//        val id: Long,
-//        val name: String,
-//        val joinedAt: LocalDateTime,
-//        val isActive: Boolean,
-//        val droppedAt: LocalDateTime?,
-//    ) {
-//        constructor(seminar: Seminar, seminarParticipant: SeminarParticipant): this(
-//            id = seminar.id,
-//            name = seminar.name,
-//            joinedAt = seminarParticipant.joinedAt,
-//            isActive = seminarParticipant.isActive,
-//            droppedAt = seminarParticipant.droppedAt
-//        )
-//    }
 
     data class Request(
         @field:NotBlank
