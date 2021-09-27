@@ -4,6 +4,7 @@ import com.wafflestudio.seminar.domain.os.model.OperatingSystem
 import com.wafflestudio.seminar.domain.os.repository.OperatingSystemRepository
 import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
+import com.wafflestudio.seminar.domain.seminar.repository.SeminarParticipantRepository
 import com.wafflestudio.seminar.domain.seminar.repository.SeminarRepository
 import com.wafflestudio.seminar.domain.survey.model.SurveyResponse
 import com.wafflestudio.seminar.domain.survey.repository.SurveyResponseRepository
@@ -36,6 +37,7 @@ class DataLoader(
     private val participantRepository: ParticipantRepository,
     private val instructorRepository: InstructorRepository,
     private val seminarRepository: SeminarRepository,
+    private val seminarParticipantRepository: SeminarParticipantRepository,
     private val jwtTokenProvider: JwtTokenProvider,
     private val participantService: ParticipantService,
 ) : ApplicationRunner {
@@ -96,7 +98,7 @@ class DataLoader(
             seminar = seminarSample,
             isActive = true,
             droppedAt = null,
-            participantProfile = participantProfileSample
+            participantProfile = participantProfileSample,
         )
 
         val instructorProfileSample: InstructorProfile = InstructorProfile(
@@ -111,9 +113,8 @@ class DataLoader(
         // PERSIST 라면 그렇지 않다. 이유는 instructorRespo 가 save 하면서 seminar 영역으로 들어가
         // 거기서 save 를 진행하기 때문에 seminarRepo 의 save 가 또 실행된다면 충돌을 일으킨다.
         // 이러할 때 PERSIST 를 사용한다.
-        participantRepository.save(participantProfileSample)
+        seminarParticipantRepository.save(seminarParticipantSample)
         instructorRepository.save(instructorProfileSample)
-
 
         println(jwtTokenProvider.generateToken(userSample.email))
     }

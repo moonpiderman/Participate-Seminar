@@ -1,12 +1,12 @@
 package com.wafflestudio.seminar.domain.user.dto
 
+import com.wafflestudio.seminar.domain.seminar.dto.SeminarParticipantDto
+import com.wafflestudio.seminar.domain.user.model.ParticipantProfile
 import com.wafflestudio.seminar.domain.user.model.User
-import org.apache.tomcat.jni.Local
-import org.springframework.data.annotation.CreatedDate
+import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import java.time.LocalDateTime
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
-import javax.validation.constraints.Null
 
 class UserDto {
     data class Response(
@@ -24,7 +24,9 @@ class UserDto {
             email = user.email,
             name = user.name,
             date_joined = user.date_joined,
-            participant_profile = user.participantProfiles?.let { ParticipantDto.Response(it)},
+//            participant_profiles = user.participantProfiles?.seminarParticipant?.let {
+//                    SeminarParticipantDto.ResponseForSeminarOfParticipant(it)},
+            participant_profile = user.participantProfile?.let {ParticipantDto.Response(it)},
             instructor_profile = user.instructorProfile?.let { InstructorDto.Response(it) }
 
         )

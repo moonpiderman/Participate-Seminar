@@ -20,8 +20,6 @@ class ParticipantProfile (
     @field:NotNull
     val accepted: Boolean? = true,
 
-    // seminars
-
     @CreatedDate
     @Column(name = "created_at")
     var createdAt: LocalDateTime = LocalDateTime.now(),
@@ -35,7 +33,7 @@ class ParticipantProfile (
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: User? = null,
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "participant_profile_id")
-    val seminarParticipant : List<SeminarParticipant>? = listOf()
+    val seminarParticipant : MutableList<SeminarParticipant> = mutableListOf()
 ) : BaseEntity()

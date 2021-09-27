@@ -33,5 +33,5 @@ class User(
     var instructorProfile: InstructorProfile? = null,
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-    var participantProfiles: ParticipantProfile? = null
+    var participantProfile: ParticipantProfile? = null
 ) : BaseEntity()

@@ -33,6 +33,6 @@ class InstructorProfile (
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: User? = null,
 
-    @ManyToOne(cascade = [CascadeType.PERSIST], fetch= FetchType.EAGER, optional = true)
+    @ManyToOne(cascade = [CascadeType.MERGE], fetch= FetchType.EAGER, optional = true)
     val seminar: Seminar? = null,
 ) : BaseEntity()

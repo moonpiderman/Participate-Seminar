@@ -1,13 +1,10 @@
 package com.wafflestudio.seminar.domain.seminar.dto
 
 import com.wafflestudio.seminar.domain.seminar.model.Seminar
-import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
-import com.wafflestudio.seminar.domain.user.dto.InstructorDto
-import com.wafflestudio.seminar.domain.user.dto.ParticipantDto
-import com.wafflestudio.seminar.domain.user.model.InstructorProfile
+import com.wafflestudio.seminar.domain.user.dto.InstructorsProfileForSeminarDto
+import com.wafflestudio.seminar.domain.user.dto.ParticipantProfileForSeminarDto
+import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import org.springframework.format.annotation.DateTimeFormat
-import java.math.BigInteger
-import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
@@ -22,36 +19,41 @@ class SeminarDto {
         val time: LocalTime,
         val online: Boolean? = true,
     //  instructors
-        val instructors: InstructorDto.Response,
+        val instructors: List<InstructorsProfileForSeminarDto.Response>,
     //  participants
-        val participants: ParticipantDto.Response?
+        val participants: List<ParticipantProfileForSeminarDto.Response>,
     ) {
-        constructor(seminar: Seminar) : this(
+        constructor(seminar: Seminar, userRepository: UserRepository) : this(
             id = seminar.id,
             name = seminar.name,
             capacity = seminar.capacity,
             count = seminar.count,
             time = seminar.time,
             online = seminar.online,
-            instructors = seminar.instructors
+            instructors = seminar.instructors.map {
+                    it -> InstructorsProfileForSeminarDto.Response(userRepository.findUserByEmail(it.user!!.email))
+            },
+            participants = seminar.instructors.map {
+                it -> ParticipantProfileForSeminarDto.Response(userRepository.findUserByEmail(it.user!!.email))
+            }
         )
     }
 
-    data class ResponseForSeminarOfParticipant(
-        val id: Long,
-        val name: String,
-        val joinedAt: LocalDateTime,
-        val isActive: Boolean,
-        val droppedAt: LocalDateTime?,
-    ) {
-        constructor(seminar: Seminar, seminarParticipant: SeminarParticipant): this(
-            id = seminar.id,
-            name = seminar.name,
-            joinedAt = seminarParticipant.joinedAt,
-            isActive = seminarParticipant.isActive,
-            droppedAt = seminarParticipant.droppedAt
-        )
-    }
+//    data class ResponseForSeminarOfParticipant(
+//        val id: Long,
+//        val name: String,
+//        val joinedAt: LocalDateTime,
+//        val isActive: Boolean,
+//        val droppedAt: LocalDateTime?,
+//    ) {
+//        constructor(seminar: Seminar, seminarParticipant: SeminarParticipant): this(
+//            id = seminar.id,
+//            name = seminar.name,
+//            joinedAt = seminarParticipant.joinedAt,
+//            isActive = seminarParticipant.isActive,
+//            droppedAt = seminarParticipant.droppedAt
+//        )
+//    }
 
     data class Request(
         @field:NotBlank

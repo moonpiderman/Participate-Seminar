@@ -37,5 +37,6 @@ class Seminar (
     val joinedAt: LocalDateTime = LocalDateTime.now(),
 
     @OneToMany(mappedBy = "seminar")
-    val instructors: List<InstructorProfile> = listOf(),
+    val instructors: MutableList<InstructorProfile> = mutableListOf(),
+
 ) : BaseEntity()

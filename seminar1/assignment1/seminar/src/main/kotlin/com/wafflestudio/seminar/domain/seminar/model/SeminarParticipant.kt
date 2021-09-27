@@ -18,6 +18,7 @@ class SeminarParticipant(
     @Column(name = "joined_at")
     val joinedAt: LocalDateTime = LocalDateTime.now(),
 
+    @Column(name = "is_active")
     val isActive: Boolean,
 
     @Column(nullable = true)

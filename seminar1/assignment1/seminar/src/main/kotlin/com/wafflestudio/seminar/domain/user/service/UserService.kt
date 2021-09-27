@@ -63,7 +63,7 @@ class UserService(
         // userId 를 통해 participant 정보를 가져올 participantService 를 생성해볼까?
 
         var updateUserInfo = participantService.modifyParticipantInfo(modifyRequest)
-        user.participantProfiles = updateUserInfo
+        user.participantProfile = updateUserInfo
         return user
     }
 
