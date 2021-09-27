@@ -1,6 +1,6 @@
 package com.wafflestudio.seminar.domain.user.model
 
-import com.wafflestudio.seminar.domain.model.BaseEntity
+import com.wafflestudio.seminar.domain.model.BaseTimeEntity
 import com.wafflestudio.seminar.domain.seminar.model.Seminar
 //import com.wafflestudio.seminar.domain.seminar.model.SeminarInstructor
 import org.springframework.data.annotation.CreatedDate
@@ -20,14 +20,6 @@ class InstructorProfile (
     // charge
     // 담당하는 세미나
 
-    @CreatedDate
-    @Column(name = "created_at")
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
-
     // user_id에 관한 필드가 존재해야한다.
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -35,4 +27,4 @@ class InstructorProfile (
 
     @ManyToOne(cascade = [CascadeType.MERGE], fetch= FetchType.EAGER, optional = true)
     val seminar: Seminar? = null,
-) : BaseEntity()
+) : BaseTimeEntity()

@@ -1,6 +1,6 @@
 package com.wafflestudio.seminar.domain.user.model
 
-import com.wafflestudio.seminar.domain.model.BaseEntity
+import com.wafflestudio.seminar.domain.model.BaseTimeEntity
 import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
 import net.bytebuddy.implementation.bind.annotation.Default
@@ -20,14 +20,6 @@ class ParticipantProfile (
     @field:NotNull
     val accepted: Boolean? = true,
 
-    @CreatedDate
-    @Column(name = "created_at")
-    var createdAt: LocalDateTime = LocalDateTime.now(),
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
-
     // user_id에 관한 필드가 존재해야한다.
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -36,4 +28,4 @@ class ParticipantProfile (
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "participant_profile_id")
     val seminarParticipant : MutableList<SeminarParticipant> = mutableListOf()
-) : BaseEntity()
+) : BaseTimeEntity()

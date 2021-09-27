@@ -1,6 +1,6 @@
 package com.wafflestudio.seminar.domain.seminar.model
 
-import com.wafflestudio.seminar.domain.model.BaseEntity
+import com.wafflestudio.seminar.domain.model.BaseTimeEntity
 import com.wafflestudio.seminar.domain.user.model.InstructorProfile
 import com.wafflestudio.seminar.domain.user.model.ParticipantProfile
 import org.hibernate.annotations.UpdateTimestamp
@@ -41,4 +41,12 @@ class Seminar (
 
     @OneToMany(mappedBy = "id")
     val seminarParticipant: MutableList<SeminarParticipant> = mutableListOf()
-) : BaseEntity()
+) : BaseTimeEntity() {
+    public fun addInstructor(instructorProfile: InstructorProfile) {
+        instructors.add(instructorProfile)
+    }
+
+    public fun addParticipant(seminarParticipants: SeminarParticipant) {
+        seminarParticipant.add(seminarParticipants)
+    }
+}

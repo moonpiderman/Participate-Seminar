@@ -1,6 +1,6 @@
 package com.wafflestudio.seminar.domain.user.model
 
-import com.wafflestudio.seminar.domain.model.BaseEntity
+import com.wafflestudio.seminar.domain.model.BaseTimeEntity
 import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -34,4 +34,4 @@ class User(
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     var participantProfile: ParticipantProfile? = null
-) : BaseEntity()
+) : BaseTimeEntity()
