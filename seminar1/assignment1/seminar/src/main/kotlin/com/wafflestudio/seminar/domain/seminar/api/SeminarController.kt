@@ -3,6 +3,7 @@ package com.wafflestudio.seminar.domain.seminar.api
 import com.wafflestudio.seminar.domain.seminar.dto.GetSeminarInfoDto
 import com.wafflestudio.seminar.domain.seminar.dto.SeminarDto
 import com.wafflestudio.seminar.domain.seminar.service.SeminarService
+import com.wafflestudio.seminar.domain.user.dto.UserDto
 import com.wafflestudio.seminar.domain.user.model.User
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import com.wafflestudio.seminar.domain.user.service.InstructorService
@@ -59,5 +60,24 @@ class SeminarController (
             }
         }
         return ResponseEntity(ListResponse(listOfSeminar), HttpStatus.OK)
+    }
+
+    @PostMapping("/{id}/user/")
+    fun joinSeminar(
+        @PathVariable("id") id: Long,
+        @CurrentUser currentUser: User,
+        joinRequest: SeminarDto.JoinRequest,
+    ): ResponseEntity<SeminarDto.Response> {
+        val registerSeminar = seminarService.joinSeminar(id, joinRequest, currentUser)
+        return ResponseEntity(SeminarDto.Response(registerSeminar, userRepository), HttpStatus.CREATED)
+    }
+
+    @DeleteMapping("/{id}/user/me/")
+    fun giveUpSeminar(
+        @PathVariable("id") id: Long,
+        @CurrentUser user: User,
+    ): ResponseEntity<SeminarDto.Response> {
+        val dropThisSeminar = seminarService.dropSeminar(id, user)
+        return ResponseEntity(SeminarDto.Response(dropThisSeminar, userRepository), HttpStatus.OK)
     }
 }

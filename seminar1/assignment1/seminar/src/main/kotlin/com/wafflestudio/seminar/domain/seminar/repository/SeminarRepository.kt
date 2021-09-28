@@ -4,4 +4,5 @@ import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface SeminarRepository: JpaRepository<Seminar, Long?> {
+    fun findSeminarById(id: Long): Seminar?
 }

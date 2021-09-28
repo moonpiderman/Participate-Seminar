@@ -80,10 +80,23 @@ class DataLoader(
             roles = "instructor,participant",
         )
 
+        val userSample2 = User(
+            email = "aaaa@aaaa.com",
+            name = "aaaa",
+            password = "aaaa",
+            roles = "participant",
+        )
+
         val participantProfileSample = ParticipantProfile(
             university = "Catholic Univ.",
             accepted = true,
-            user = userSample
+            user = userSample,
+        )
+
+        val participantProfileSample2 = ParticipantProfile(
+            university = "SNU",
+            accepted = true,
+            user = userSample2,
         )
 
         val seminarSample: Seminar = Seminar(
@@ -99,6 +112,13 @@ class DataLoader(
             isActive = true,
             droppedAt = null,
             participantProfile = participantProfileSample,
+        )
+
+        val seminarParticipantSample2 = SeminarParticipant(
+            seminar = seminarSample,
+            isActive = true,
+            droppedAt = null,
+            participantProfile = participantProfileSample2
         )
 
         val instructorProfileSample: InstructorProfile = InstructorProfile(

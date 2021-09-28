@@ -16,11 +16,11 @@ class SeminarParticipant(
     val participantProfile: ParticipantProfile,
 
     @Column(name = "joined_at")
-    val joinedAt: LocalDateTime = LocalDateTime.now(),
+    var joinedAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "is_active")
-    val isActive: Boolean,
+    var isActive: Boolean = true,
 
     @Column(nullable = true)
-    val droppedAt: LocalDateTime?,
+    var droppedAt: LocalDateTime? = null,
 ) : BaseEntity()

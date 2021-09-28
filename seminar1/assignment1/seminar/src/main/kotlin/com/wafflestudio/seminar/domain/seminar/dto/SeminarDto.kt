@@ -58,4 +58,9 @@ class SeminarDto {
         @field:NotNull
         val online: Boolean?
     )
+
+    data class JoinRequest(
+        @field:NotNull
+        val role: String,
+    )
 }
