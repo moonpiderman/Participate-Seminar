@@ -77,7 +77,7 @@ class DataLoader(
             email = "sample@sample.com",
             name = "sample",
             password = "sample",
-            roles = "",
+            roles = "instructor,participant",
         )
 
         val participantProfileSample = ParticipantProfile(

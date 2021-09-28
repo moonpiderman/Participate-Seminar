@@ -8,7 +8,7 @@ class InstructorDto {
     data class Response(
         val id: Long,
         val company: String?,
-        val year: Long? = null,
+        val year: Int? = null,
         val charge: ChargeDto.ChargeResponse?
     ) {
         constructor(instructor: InstructorProfile) : this(

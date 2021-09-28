@@ -7,7 +7,9 @@ import com.wafflestudio.seminar.domain.seminar.exception.SeminarNotFoundExceptio
 import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import com.wafflestudio.seminar.domain.seminar.repository.SeminarRepository
 import com.wafflestudio.seminar.domain.user.model.User
+import com.wafflestudio.seminar.domain.user.repository.InstructorRepository
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
+import com.wafflestudio.seminar.domain.user.service.InstructorService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -15,18 +17,32 @@ import org.springframework.stereotype.Service
 class SeminarService(
     private val seminarRepository: SeminarRepository,
     private val userRepository: UserRepository,
+    private val instructorService: InstructorService,
+    private val instructorRepository: InstructorRepository,
 ) {
     fun checkUserRole(user: User): Boolean {
-        if (user.roles != "instructor") {
-            return false
-        } else { throw NoAuthenticationCreatSeminar() }
+//        if (user.roles != "instructor") {
+//            return false
+//        } else { return true }
+        if (user.roles.split(",").indexOf("instructor") == 0 ) {
+            return true
+        } else if (user.roles == "instructor"){
+            return true
+        } else {
+            throw NoAuthenticationCreatSeminar()
+        }
     }
 
     fun saveSeminar(user: User, seminarRequest: SeminarDto.Request): Seminar {
         if (checkUserRole(user)) {
-            return seminarRepository.save(
-                Seminar(seminarRequest.name, seminarRequest.capacity, seminarRequest.count, seminarRequest.time)
-            )
+            val storedSeminar = seminarRepository.save(
+                Seminar(seminarRequest.name, seminarRequest.capacity, seminarRequest.count, seminarRequest.time))
+            val instructorId = user.instructorProfile?.id
+            val instructor = instructorService.getInstructorResponseId(instructorId)
+            instructor.seminar = storedSeminar
+            user.instructorProfile = instructor
+            userRepository.save(user)
+            return storedSeminar
         } else { throw NoAuthenticationCreatSeminar() }
     }
 

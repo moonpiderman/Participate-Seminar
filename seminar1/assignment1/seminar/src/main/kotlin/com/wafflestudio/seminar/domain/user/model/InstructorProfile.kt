@@ -12,10 +12,10 @@ import javax.persistence.*
 @Table(name = "instructor")
 class InstructorProfile (
     @Column
-    val company: String? = "",
+    var company: String? = "",
 
     @Column
-    val year: Long? = 0,
+    var year: Int? = null,
 
     // charge
     // 담당하는 세미나
@@ -26,5 +26,5 @@ class InstructorProfile (
     val user: User? = null,
 
     @ManyToOne(cascade = [CascadeType.MERGE], fetch= FetchType.EAGER, optional = true)
-    val seminar: Seminar? = null,
+    var seminar: Seminar? = null,
 ) : BaseTimeEntity()

@@ -15,10 +15,10 @@ import javax.validation.constraints.NotNull
 @Table(name = "participant")
 class ParticipantProfile (
     @Column
-    val university: String? = "",
+    var university: String? = "",
 
     @field:NotNull
-    val accepted: Boolean? = true,
+    var accepted: Boolean? = true,
 
     // user_id에 관한 필드가 존재해야한다.
     @OneToOne
@@ -28,4 +28,8 @@ class ParticipantProfile (
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "participant_profile_id")
     val seminarParticipant : MutableList<SeminarParticipant> = mutableListOf()
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    fun enrollSeminar(mappingSeminar: SeminarParticipant) {
+        seminarParticipant.add(mappingSeminar)
+    }
+}

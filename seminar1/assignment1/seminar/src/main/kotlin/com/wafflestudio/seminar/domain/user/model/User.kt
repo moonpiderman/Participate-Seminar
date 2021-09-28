@@ -1,6 +1,7 @@
 package com.wafflestudio.seminar.domain.user.model
 
 import com.wafflestudio.seminar.domain.model.BaseTimeEntity
+import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
 import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -18,12 +19,12 @@ class User(
     val name: String,
 
     @field:NotBlank
-    val password: String,
+    var password: String,
 
     // requset 시에만 사용하는 필드인가..? 아닐텐데...
     @Column
     @field:NotNull
-    val roles: String,
+    var roles: String = "",
 
     @Column
     @field:CreatedDate

@@ -29,8 +29,8 @@ class ParticipantDto {
 
     data class ParticipantRequest(
         @field:NotNull
-        val university: String = "",
+        val university: String? = "",
         @field:NotNull
-        val accepted: Boolean = true
+        val accepted: String? = "",
     )
 }

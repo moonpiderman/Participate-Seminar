@@ -24,8 +24,6 @@ class UserDto {
             email = user.email,
             name = user.name,
             date_joined = user.date_joined,
-//            participant_profiles = user.participantProfiles?.seminarParticipant?.let {
-//                    SeminarParticipantDto.ResponseForSeminarOfParticipant(it)},
             participant_profile = user.participantProfile?.let {ParticipantDto.Response(it)},
             instructor_profile = user.instructorProfile?.let { InstructorDto.Response(it) }
 
@@ -50,26 +48,29 @@ class UserDto {
         @field:NotNull
         val company: String? = "",
         @field:NotNull
-        val year: Long? = 0
+        val year: Int? = 0
     )
 
     data class ModifyRequest(
-//        @field:NotNull
-//        val email: String? = null,
-
-//        @field:NotNull
-//        val name: String? = null,
-
-//        @field:NotNull
-//        val password: String? = null,
+        @field:NotNull
+        val email: String,
 
         @field:NotNull
+        val name: String,
+
+        @field:NotNull
+        val password: String,
+
+//        @field:NotNull
         val university: String? = null,
 
-        @field:NotNull
+//        @field:NotNull
         val company: String? = null,
 
-        @field:NotNull
-        val year: Long? = 0
+//        @field:NotNull
+        val year: Int? = 0,
+
+//        @field:NotNull
+        var accepted: String?,
     )
 }

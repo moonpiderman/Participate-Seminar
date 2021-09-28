@@ -27,14 +27,14 @@ class UserController(
     }
 
     @GetMapping("/me/")
-    fun getCurrentUser(@CurrentUser user: User): UserDto.Response {
-        return UserDto.Response(user)
+    fun getCurrentUser(@CurrentUser user: User): ResponseEntity<UserDto.Response> {
+        return ResponseEntity(UserDto.Response(user), HttpStatus.OK)
     }
 
     @GetMapping("/{id}/")
-    fun getIdentityUser(@PathVariable("id") id: Long): UserDto.Response {
+    fun getIdentityUser(@PathVariable("id") id: Long): ResponseEntity<UserDto.Response> {
         val userResponse = userService.getUserResponseId(id)
-        return UserDto.Response(userResponse)
+        return ResponseEntity(UserDto.Response(userResponse), HttpStatus.OK)
     }
 
     // participant 인지 instructor 인지 알 수 없으니 request의 값들이 must일 필요는 없다.
@@ -46,15 +46,20 @@ class UserController(
 
 
     @PutMapping("/me/")
-    fun modifyUser(@CurrentUser user: User, @Valid @RequestBody modifyRequest: UserDto.ModifyRequest): UserDto.Response {
-        var editUserInfo = userService.modifyMe(user, modifyRequest)
-        return UserDto.Response(editUserInfo)
+    fun modifyUser(
+        @CurrentUser user: User,
+        @Valid @RequestBody modifyRequest: UserDto.ModifyRequest
+    ): ResponseEntity<UserDto.Response> {
+        val editUserInfo = userService.modifyMe(user, modifyRequest)
+        return ResponseEntity(UserDto.Response(editUserInfo), HttpStatus.OK)
     }
 
     @PostMapping("/participant/")
-    fun userParticipant(@CurrentUser user: User, @Valid @RequestBody participantRequest: ParticipantDto.ParticipantRequest): ResponseEntity<ParticipantDto.Response> {
+    fun userParticipant(
+        @CurrentUser user: User,
+        @Valid @RequestBody participantRequest: ParticipantDto.ParticipantRequest
+    ): ResponseEntity<UserDto.Response> {
         val partInfo = participantService.enrollParticipant(user, participantRequest)
-        val partInfoResponse = ParticipantDto.Response(partInfo)
-        return ResponseEntity(partInfoResponse, HttpStatus.CREATED)
+        return ResponseEntity(UserDto.Response(partInfo), HttpStatus.CREATED)
     }
 }
