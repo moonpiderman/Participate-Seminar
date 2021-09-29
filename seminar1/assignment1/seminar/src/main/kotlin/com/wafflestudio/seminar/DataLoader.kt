@@ -101,8 +101,8 @@ class DataLoader(
 
         val seminarSample: Seminar = Seminar(
             name = "seminar",
-            capacity = 2,
-            count = 100,
+            capacity = 10,
+            count = 5,
             time = LocalTime.NOON,
             online = false
         )

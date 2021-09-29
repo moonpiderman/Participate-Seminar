@@ -16,7 +16,7 @@ class User(
     val email: String,
 
     @field:NotBlank
-    val name: String,
+    var name: String,
 
     @field:NotBlank
     var password: String,
@@ -30,9 +30,9 @@ class User(
     @field:CreatedDate
     val date_joined: LocalDateTime = LocalDateTime.now(),
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     var instructorProfile: InstructorProfile? = null,
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     var participantProfile: ParticipantProfile? = null
 ) : BaseTimeEntity()

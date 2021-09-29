@@ -3,6 +3,7 @@ package com.wafflestudio.seminar.domain.user.service
 import com.wafflestudio.seminar.domain.user.dto.ParticipantDto
 import com.wafflestudio.seminar.domain.user.dto.UserDto
 import com.wafflestudio.seminar.domain.user.exception.AlreadyParticipantUser
+import com.wafflestudio.seminar.domain.user.exception.UserNotFoundException
 import com.wafflestudio.seminar.domain.user.exception.UserRoleException
 import com.wafflestudio.seminar.domain.user.model.ParticipantProfile
 import com.wafflestudio.seminar.domain.user.model.User
@@ -10,6 +11,7 @@ import com.wafflestudio.seminar.domain.user.repository.ParticipantRepository
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import com.wafflestudio.seminar.global.common.exception.InvalidRequestException
 import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import javax.persistence.Entity
 
@@ -43,5 +45,9 @@ class ParticipantService(
 
         val addParticipant = userRepository.save(currentUser)
         return addParticipant
+    }
+
+    fun getParticipantResponseById(id: Long): ParticipantProfile {
+        return participantRepository.findByIdOrNull(id) ?: throw UserNotFoundException()
     }
 }
