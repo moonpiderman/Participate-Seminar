@@ -68,9 +68,11 @@ class SeminarService(
                 throw CapacityOver("Capacity over.")
             }
 
-            if (seminarInfo.seminarParticipant.find { it.seminar == seminarInfo } != null) {
-                if (!(seminarInfo.seminarParticipant.find { it.seminar == seminarInfo }!!.isActive)) {
-                    throw CannotJoinDroppingSeminar("Cannot join this seminar again.")
+            val seminarParticipantForCheckIsActive = seminarInfo.seminarParticipant.find { it.seminar == seminarInfo }
+            if (seminarParticipantForCheckIsActive != null) {
+                if (seminarParticipantForCheckIsActive.participantProfile.user == user) {
+                    if (!(seminarParticipantForCheckIsActive.isActive))
+                        throw CannotJoinDroppingSeminar("Cannot join this seminar again.")
                 }
             }
 
