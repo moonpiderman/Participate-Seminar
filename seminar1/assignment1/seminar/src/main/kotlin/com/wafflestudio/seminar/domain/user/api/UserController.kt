@@ -50,8 +50,8 @@ class UserController(
         @CurrentUser user: User,
         @Valid @RequestBody modifyRequest: UserDto.ModifyRequest
     ): ResponseEntity<UserDto.Response> {
-        val editUserInfo = userService.modifyMe(user, modifyRequest)
-        return ResponseEntity(UserDto.Response(editUserInfo), HttpStatus.OK)
+        val editedUser = userService.modifyMe(user, modifyRequest)
+        return ResponseEntity(UserDto.Response(editedUser), HttpStatus.OK)
     }
 
     @PostMapping("/participant/")

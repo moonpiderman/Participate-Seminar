@@ -17,10 +17,6 @@ class InstructorProfile (
     @Column
     var year: Int? = null,
 
-    // charge
-    // 담당하는 세미나
-
-    // user_id에 관한 필드가 존재해야한다.
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: User,

@@ -56,12 +56,6 @@ class UserService(
         userRepository.save(userInfo)
     }
 
-    // modify function
-    // modify 방법론에 대하여 -> user 의 값을 모두 받아오자.
-    // 그러면 변경가능한 부분만 또 따로 지정하면 된다.
-    // email, name 변경 불가, email 로 체크하기.
-    // password 변경 가능.
-    // university, company, year 변경가능.
     fun modifyMe(currentUser: User, modifyRequest: UserDto.ModifyRequest): User {
         if (currentUser.email != modifyRequest.email) {
             throw UserNotFoundException("You can't change your email.")

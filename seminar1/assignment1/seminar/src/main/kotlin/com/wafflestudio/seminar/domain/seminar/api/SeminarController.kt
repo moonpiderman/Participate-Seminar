@@ -21,9 +21,6 @@ class SeminarController (
     private val userRepository: UserRepository,
     private var listOfSeminar: List<GetSeminarInfoDto.Response>,
 ) {
-    // @CurrentUser 를 사용하여 현재 user 가 instructor 의 권한이 있는 경우
-    // post seminar 가 가능해진다.
-    // service 단에서 CurrentUser 의 role 이 instructor 인지 파악하자.
     @PostMapping("/")
     fun createSeminar(
         @CurrentUser user: User,
@@ -78,8 +75,7 @@ class SeminarController (
         @CurrentUser currentUser: User,
         @Valid @RequestBody joinRequest: SeminarDto.JoinRequest,
     ): ResponseEntity<SeminarDto.SeminarTotalResponse> {
-//        val registerSeminar = seminarService.joinSeminar(id, joinRequest, currentUser)
-        seminarService.joinSeminar(id, joinRequest, currentUser)
+        seminarService.participateSeminar(id, joinRequest, currentUser)
         val newSeminar = seminarService.getSeminarResponseId(id)
         return ResponseEntity(SeminarDto.SeminarTotalResponse(newSeminar), HttpStatus.CREATED)
     }
@@ -88,8 +84,8 @@ class SeminarController (
     fun giveUpSeminar(
         @PathVariable("id") id: Long,
         @CurrentUser user: User,
-    ): ResponseEntity<SeminarDto.Response> {
+    ): ResponseEntity<SeminarDto.SeminarTotalResponse> {
         val dropThisSeminar = seminarService.dropSeminar(id, user)
-        return ResponseEntity(SeminarDto.Response(dropThisSeminar, userRepository), HttpStatus.OK)
+        return ResponseEntity(SeminarDto.SeminarTotalResponse(dropThisSeminar), HttpStatus.OK)
     }
 }

@@ -59,8 +59,6 @@ class SeminarDto {
             count = seminar.count,
             time = seminar.time,
             online = seminar.online,
-            // 여기서 user 가 필요한 이유.
-            // 해당하는 instructor, participant 의 정보를 갖고있는지 체크해야하기 때문.
             instructors = seminar.instructors.map {
                 InstructorsProfileForSeminarDto.Response(it.user)
             },
