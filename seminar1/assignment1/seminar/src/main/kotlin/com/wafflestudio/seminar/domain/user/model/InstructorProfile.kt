@@ -23,7 +23,7 @@ class InstructorProfile (
     // user_id에 관한 필드가 존재해야한다.
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    val user: User? = null,
+    val user: User,
 
     @ManyToOne(cascade = [CascadeType.MERGE], fetch= FetchType.EAGER, optional = true)
     var seminar: Seminar? = null,

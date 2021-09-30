@@ -10,12 +10,15 @@ import com.wafflestudio.seminar.domain.seminar.repository.SeminarParticipantRepo
 import com.wafflestudio.seminar.domain.seminar.repository.SeminarRepository
 import com.wafflestudio.seminar.domain.user.dto.ParticipantDto
 import com.wafflestudio.seminar.domain.user.dto.UserDto
+import com.wafflestudio.seminar.domain.user.exception.InstructorUnAuthorization
 import com.wafflestudio.seminar.domain.user.model.User
 import com.wafflestudio.seminar.domain.user.repository.InstructorRepository
 import com.wafflestudio.seminar.domain.user.repository.ParticipantRepository
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import com.wafflestudio.seminar.domain.user.service.InstructorService
 import com.wafflestudio.seminar.domain.user.service.ParticipantService
+import com.wafflestudio.seminar.global.common.exception.InvalidRequestException
+import com.wafflestudio.seminar.global.common.exception.NotAllowedException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -50,24 +53,6 @@ class SeminarService(
             userRepository.save(user)
             return storedSeminar
         } else { throw NoAuthenticationCreatSeminar() }
-    }
-
-    fun getSeminarResponseId(id: Long): Seminar {
-        return seminarRepository.findByIdOrNull(id) ?: throw SeminarNotFoundException()
-    }
-
-    fun getSeminarInfoByName(seminarName: String, seminarOrder: Boolean): List<GetSeminarInfoDto.Response> {
-        val seminars = seminarRepository.findAll()
-        var listOfSeminar = seminars.sortedWith(compareBy({it.createdAt}))
-        if (seminarOrder) listOfSeminar = listOfSeminar.reversed()
-        return listOfSeminar.map { it -> GetSeminarInfoDto.Response(it) }
-    }
-
-    fun getAllSeminarInfo(seminarOrder: Boolean): List<GetSeminarInfoDto.Response> {
-        val seminars = seminarRepository.findAll()
-        var listOfSeminar = seminars.sortedWith(compareBy({it.createdAt}))
-        if (seminarOrder) listOfSeminar = listOfSeminar.reversed()
-        return listOfSeminar.map { it -> GetSeminarInfoDto.Response(it) }
     }
 
     // instructor,participant 인 경우 -> ?
@@ -129,6 +114,38 @@ class SeminarService(
         return seminarRepository.findSeminarById(id)!!
     }
 
+    // modify Seminar
+    fun modifySeminar(id: Long, modifyRequest: SeminarDto.Request?, user: User): Seminar {
+        val seminarInfo = seminarRepository.findSeminarById(id)
+        if (seminarInfo == null) {
+            throw SeminarNotFoundException("This Seminar Not Found.")
+        }
+        if (user.roles.contains("instructor")) {
+            // 해당 세미나에 대한 instructor 권한을 갖고있는지 조회.
+            // instructorRepository 를 통해서 조회하면 될듯.
+            if (user.instructorProfile!!.seminar!!.id != id) {
+                throw InstructorUnAuthorization("No Authentication.")
+            }
+            // 권한 통과. 이제 seminar 수정 돌입.
+            if (modifyRequest!!.capacity < seminarInfo.seminarParticipant.filter {it.isActive}.size.toLong()) {
+                throw CapacityOver("Capacity is over.")
+            }
+            val changedOnline = modifyRequest.online.lowercase().toBoolean()
+
+            seminarInfo.name = modifyRequest.name
+            seminarInfo.capacity = modifyRequest.capacity
+            seminarInfo.count = modifyRequest.count
+            seminarInfo.time = modifyRequest.time
+            seminarInfo.online = changedOnline
+
+            seminarRepository.save(seminarInfo) // update
+            return getSeminarResponseId(id)
+        } else {
+            throw NoAuthenticationModifySeminar("No Authentication to modify this seminar.")
+        }
+    }
+
+
     fun dropSeminar(id: Long, user: User): Seminar {
         val seminar = seminarRepository.findSeminarById(id)
         if (seminar == null) {
@@ -143,5 +160,23 @@ class SeminarService(
 
         seminarRepository.save(seminar)
         return seminarRepository.findSeminarById(id)!!
+    }
+
+    fun getSeminarResponseId(id: Long): Seminar {
+        return seminarRepository.findByIdOrNull(id) ?: throw SeminarNotFoundException()
+    }
+
+    fun getSeminarInfoByName(seminarName: String, seminarOrder: Boolean): List<GetSeminarInfoDto.Response> {
+        val seminars = seminarRepository.findAll()
+        var listOfSeminar = seminars.sortedWith(compareBy({it.createdAt}))
+        if (seminarOrder) listOfSeminar = listOfSeminar.reversed()
+        return listOfSeminar.map { it -> GetSeminarInfoDto.Response(it) }
+    }
+
+    fun getAllSeminarInfo(seminarOrder: Boolean): List<GetSeminarInfoDto.Response> {
+        val seminars = seminarRepository.findAll()
+        var listOfSeminar = seminars.sortedWith(compareBy({it.createdAt}))
+        if (seminarOrder) listOfSeminar = listOfSeminar.reversed()
+        return listOfSeminar.map { it -> GetSeminarInfoDto.Response(it) }
     }
 }

@@ -24,7 +24,7 @@ class ParticipantProfile (
     // user_id에 관한 필드가 존재해야한다.
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    val user: User? = null,
+    val user: User,
 
     @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "participant_profile_id")

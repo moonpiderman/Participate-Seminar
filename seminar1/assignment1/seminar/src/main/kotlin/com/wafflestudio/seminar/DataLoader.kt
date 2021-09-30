@@ -73,69 +73,69 @@ class DataLoader(
         }
 
         // Samples for request test
-        val userSample = User(
-            email = "sample@sample.com",
-            name = "sample",
-            password = "sample",
-            roles = "instructor,participant",
-        )
-
-        val userSample2 = User(
-            email = "aaaa@aaaa.com",
-            name = "aaaa",
-            password = "aaaa",
-            roles = "participant",
-        )
-
-        val participantProfileSample = ParticipantProfile(
-            university = "Catholic Univ.",
-            accepted = true,
-            user = userSample,
-        )
-
-        val participantProfileSample2 = ParticipantProfile(
-            university = "SNU",
-            accepted = true,
-            user = userSample2,
-        )
-
-        val seminarSample: Seminar = Seminar(
-            name = "seminar",
-            capacity = 10,
-            count = 5,
-            time = LocalTime.NOON,
-            online = false
-        )
-
-        val seminarParticipantSample = SeminarParticipant(
-            seminar = seminarSample,
-            isActive = true,
-            droppedAt = null,
-            participantProfile = participantProfileSample,
-        )
-
-        val seminarParticipantSample2 = SeminarParticipant(
-            seminar = seminarSample,
-            isActive = true,
-            droppedAt = null,
-            participantProfile = participantProfileSample2
-        )
-
-        val instructorProfileSample: InstructorProfile = InstructorProfile(
-            company = "Naver",
-            year = 1,
-            user = userSample,
-            seminar = seminarSample
-        )
-        userRepository.save(userSample)
+//        val userSample = User(
+//            email = "sample@sample.com",
+//            name = "sample",
+//            password = "sample",
+//            roles = "instructor,participant",
+//        )
+//
+//        val userSample2 = User(
+//            email = "aaaa@aaaa.com",
+//            name = "aaaa",
+//            password = "aaaa",
+//            roles = "participant",
+//        )
+//
+//        val participantProfileSample = ParticipantProfile(
+//            university = "Catholic Univ.",
+//            accepted = true,
+//            user = userSample,
+//        )
+//
+//        val participantProfileSample2 = ParticipantProfile(
+//            university = "SNU",
+//            accepted = true,
+//            user = userSample2,
+//        )
+//
+//        val seminarSample: Seminar = Seminar(
+//            name = "seminar",
+//            capacity = 10,
+//            count = 5,
+//            time = LocalTime.NOON,
+//            online = false
+//        )
+//
+//        val seminarParticipantSample = SeminarParticipant(
+//            seminar = seminarSample,
+//            isActive = true,
+//            droppedAt = null,
+//            participantProfile = participantProfileSample,
+//        )
+//
+//        val seminarParticipantSample2 = SeminarParticipant(
+//            seminar = seminarSample,
+//            isActive = true,
+//            droppedAt = null,
+//            participantProfile = participantProfileSample2
+//        )
+//
+//        val instructorProfileSample: InstructorProfile = InstructorProfile(
+//            company = "Naver",
+//            year = 1,
+//            user = userSample,
+//            seminar = seminarSample
+//        )
+//        userRepository.save(userSample)
 //        seminarRepository.save(seminarSample)
         // InstructorProfile.seminar 의 cascadeType 이 MERGE 라면 save 가 존재해야하나,
         // PERSIST 라면 그렇지 않다. 이유는 instructorRespo 가 save 하면서 seminar 영역으로 들어가
         // 거기서 save 를 진행하기 때문에 seminarRepo 의 save 가 또 실행된다면 충돌을 일으킨다.
         // 이러할 때 PERSIST 를 사용한다.
-        seminarParticipantRepository.save(seminarParticipantSample)
-        instructorRepository.save(instructorProfileSample)
+//        seminarParticipantRepository.save(seminarParticipantSample)
+//        instructorRepository.save(instructorProfileSample)
 
-        println(jwtTokenProvider.generateToken(userSample.email))
+//        println(jwtTokenProvider.generateToken(userSample.email))
     }
 }

@@ -8,6 +8,7 @@ import java.time.LocalTime
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Positive
 
 class SeminarDto {
     data class Response(
@@ -34,7 +35,37 @@ class SeminarDto {
             },
             participants = seminar.seminarParticipant.map {it ->
                 SeminarParticipantDto.ResponseForSeminarParticipants(
-                    userRepository.findUserByEmail(it.participantProfile.user!!.email), it)
+                    userRepository.findUserByEmail(it.participantProfile.user.email), it)
+            }
+        )
+    }
+
+    data class SeminarTotalResponse(
+        val id: Long,
+        val name: String,
+        val capacity: Long,
+        val count: Long,
+        val time: LocalTime,
+        val online: Boolean? = true,
+        //  instructors
+        val instructors: List<InstructorsProfileForSeminarDto.Response>,
+        //  participants
+        val participants: List<SeminarParticipantDto.ResponseForSeminarParticipants>,
+    ) {
+        constructor(seminar: Seminar): this(
+            id = seminar.id,
+            name = seminar.name,
+            capacity = seminar.capacity,
+            count = seminar.count,
+            time = seminar.time,
+            online = seminar.online,
+            // 여기서 user 가 필요한 이유.
+            // 해당하는 instructor, participant 의 정보를 갖고있는지 체크해야하기 때문.
+            instructors = seminar.instructors.map {
+                InstructorsProfileForSeminarDto.Response(it.user)
+            },
+            participants = seminar.seminarParticipant.map {
+                SeminarParticipantDto.ResponseForSeminarParticipants(it.participantProfile.user, it)
             }
         )
     }
@@ -43,20 +74,18 @@ class SeminarDto {
         @field:NotBlank
         val name: String,
 
-        @field:NotNull
+        @field:Positive
         @Min(1)
         val capacity: Long,
 
-        @field:NotNull
+        @field:Positive
         @Min(1)
         val count: Long,
 
-        @field:NotNull
         @field:DateTimeFormat(pattern = "HH:mm")
         val time: LocalTime,
 
-        @field:NotNull
-        val online: Boolean?
+        val online: String,
     )
 
     data class JoinRequest(

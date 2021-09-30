@@ -22,7 +22,7 @@ class ParticipantDto {
             university = participant.university,
             accepted = participant.accepted,
             seminars = participant.seminarParticipant. map {
-                it -> SeminarParticipantDto.ResponseForSeminarOfParticipant(it)
+                    SeminarParticipantDto.ResponseForSeminarOfParticipant(it)
             }
         )
     }

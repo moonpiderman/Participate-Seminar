@@ -62,14 +62,26 @@ class SeminarController (
         return ResponseEntity(ListResponse(listOfSeminar), HttpStatus.OK)
     }
 
+    @PutMapping("/{id}/")
+    fun modifySeminar(
+        @PathVariable("id") id: Long,
+        @Valid @RequestBody modifyRequest: SeminarDto.Request?,
+        @CurrentUser currentUser: User
+    ): ResponseEntity<SeminarDto.Response> {
+        val editedSeminar = seminarService.modifySeminar(id, modifyRequest, currentUser)
+        return ResponseEntity(SeminarDto.Response(editedSeminar, userRepository), HttpStatus.OK)
+    }
+
     @PostMapping("/{id}/user/")
     fun joinSeminar(
         @PathVariable("id") id: Long,
         @CurrentUser currentUser: User,
-        joinRequest: SeminarDto.JoinRequest,
-    ): ResponseEntity<SeminarDto.Response> {
-        val registerSeminar = seminarService.joinSeminar(id, joinRequest, currentUser)
-        return ResponseEntity(SeminarDto.Response(registerSeminar, userRepository), HttpStatus.CREATED)
+        @Valid @RequestBody joinRequest: SeminarDto.JoinRequest,
+    ): ResponseEntity<SeminarDto.SeminarTotalResponse> {
+//        val registerSeminar = seminarService.joinSeminar(id, joinRequest, currentUser)
+        seminarService.joinSeminar(id, joinRequest, currentUser)
+        val newSeminar = seminarService.getSeminarResponseId(id)
+        return ResponseEntity(SeminarDto.SeminarTotalResponse(newSeminar), HttpStatus.CREATED)
     }
 
     @DeleteMapping("/{id}/user/me/")

@@ -17,33 +17,29 @@ import javax.validation.constraints.NotNull
 @Table(name = "seminar")
 class Seminar (
     @field:NotBlank
-    val name: String,
+    var name: String,
 
     @Min(1)
-    val capacity: Long,
+    var capacity: Long,
 
     @Min(1)
-    val count: Long,
+    var count: Long,
 
-    @field:NotBlank
-    val time: LocalTime,
+    @field:NotNull
+    var time: LocalTime,
 
-    val online: Boolean = true,
-
-    @CreatedDate
-    @Column(name = "joined_at")
-    val joinedAt: LocalDateTime = LocalDateTime.now(),
+    var online: Boolean = true,
 
     @OneToMany(mappedBy = "seminar", cascade = [CascadeType.ALL])
     val instructors: MutableList<InstructorProfile> = mutableListOf(),
 
-    @OneToMany(mappedBy = "id", cascade = [CascadeType.ALL])
-    val seminarParticipant: MutableList<SeminarParticipant> = mutableListOf()
+    @OneToMany(mappedBy = "seminar", cascade = [CascadeType.ALL])
+    val seminarParticipant: MutableList<SeminarParticipant> = mutableListOf(),
 ) : BaseTimeEntity() {
-    public fun addInstructor(instructorProfile: InstructorProfile) {
+    fun addInstructor(instructorProfile: InstructorProfile) {
         instructors.add(instructorProfile)
     }
-    public fun addParticipant(seminarParticipants: SeminarParticipant) {
+    fun addParticipant(seminarParticipants: SeminarParticipant) {
         seminarParticipant.add(seminarParticipants)
     }
 }
