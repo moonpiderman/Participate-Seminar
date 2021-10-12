@@ -1,12 +1,7 @@
 package com.wafflestudio.seminar.domain.seminar.model
 
 import com.wafflestudio.seminar.domain.model.BaseTimeEntity
-import com.wafflestudio.seminar.domain.seminar.repository.SeminarParticipantRepository
 import com.wafflestudio.seminar.domain.user.model.InstructorProfile
-import com.wafflestudio.seminar.domain.user.model.ParticipantProfile
-import org.hibernate.annotations.UpdateTimestamp
-import org.springframework.data.annotation.CreatedDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.persistence.*
 import javax.validation.constraints.Min

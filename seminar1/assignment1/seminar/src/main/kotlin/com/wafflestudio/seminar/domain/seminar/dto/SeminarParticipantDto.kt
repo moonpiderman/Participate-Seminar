@@ -1,6 +1,5 @@
 package com.wafflestudio.seminar.domain.seminar.dto
 
-import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
 import com.wafflestudio.seminar.domain.user.model.User
 import java.time.LocalDateTime

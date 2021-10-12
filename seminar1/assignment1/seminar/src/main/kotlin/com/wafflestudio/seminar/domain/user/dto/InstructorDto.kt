@@ -1,7 +1,6 @@
 package com.wafflestudio.seminar.domain.user.dto
 
 import com.wafflestudio.seminar.domain.seminar.dto.ChargeDto
-import com.wafflestudio.seminar.domain.seminar.dto.SeminarDto
 import com.wafflestudio.seminar.domain.user.model.InstructorProfile
 
 class InstructorDto {

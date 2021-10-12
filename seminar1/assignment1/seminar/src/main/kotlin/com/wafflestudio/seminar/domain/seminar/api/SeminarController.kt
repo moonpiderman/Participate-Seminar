@@ -3,10 +3,8 @@ package com.wafflestudio.seminar.domain.seminar.api
 import com.wafflestudio.seminar.domain.seminar.dto.GetSeminarInfoDto
 import com.wafflestudio.seminar.domain.seminar.dto.SeminarDto
 import com.wafflestudio.seminar.domain.seminar.service.SeminarService
-import com.wafflestudio.seminar.domain.user.dto.UserDto
 import com.wafflestudio.seminar.domain.user.model.User
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
-import com.wafflestudio.seminar.domain.user.service.InstructorService
 import com.wafflestudio.seminar.global.auth.CurrentUser
 import com.wafflestudio.seminar.global.common.dto.ListResponse
 import org.springframework.http.HttpStatus

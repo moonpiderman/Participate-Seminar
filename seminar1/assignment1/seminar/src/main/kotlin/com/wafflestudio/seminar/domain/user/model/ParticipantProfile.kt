@@ -1,15 +1,8 @@
 package com.wafflestudio.seminar.domain.user.model
 
 import com.wafflestudio.seminar.domain.model.BaseTimeEntity
-import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
-import com.wafflestudio.seminar.domain.seminar.repository.SeminarParticipantRepository
-import net.bytebuddy.implementation.bind.annotation.Default
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import java.time.LocalDateTime
 import javax.persistence.*
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
