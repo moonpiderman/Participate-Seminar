@@ -1,13 +1,8 @@
 package com.wafflestudio.seminar.domain.user.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.sun.istack.NotNull
-import com.wafflestudio.seminar.domain.seminar.dto.SeminarDto
 import com.wafflestudio.seminar.domain.seminar.dto.SeminarParticipantDto
-import com.wafflestudio.seminar.domain.seminar.model.Seminar
-import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
 import com.wafflestudio.seminar.domain.user.model.ParticipantProfile
-import java.time.LocalDateTime
 
 class ParticipantDto {
     data class Response(

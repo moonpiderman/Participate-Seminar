@@ -37,14 +37,6 @@ class UserController(
         return ResponseEntity(UserDto.Response(userResponse), HttpStatus.OK)
     }
 
-    // participant 인지 instructor 인지 알 수 없으니 request의 값들이 must일 필요는 없다.
-    // 값을 제한해주는 것을 막자.
-
-    // 참여자인 User 는 university 를 수정할 수 있다.
-    // 진행자인 User 는 company 와 year 를 수정할 수 있다.
-    // 참여자 혹은 진행자인 User 는 Participant 의 accepted 를 제외하고 모든 정보를 수정할 수 있다.
-
-
     @PutMapping("/me/")
     fun modifyUser(
         @CurrentUser user: User,

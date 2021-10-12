@@ -29,7 +29,6 @@ class UserService(
         return userRepository.save(User(signupRequest.email, signupRequest.name, encodedPassword, signupRequest.role))
     }
 
-    // user 의 role 을 판단해서 넘겨주는 service 로직을 형성
     fun enrollRole(userInfo: User, signupRequest: UserDto.SignupRequest) {
         // role = participant
         if (signupRequest.role == "participant") {
@@ -42,7 +41,6 @@ class UserService(
                 )
             )
         }
-        // role = instructor
         if (signupRequest.role == "instructor") {
             userInfo.roles = signupRequest.role
             instructorRepository.save(

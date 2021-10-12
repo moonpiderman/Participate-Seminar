@@ -1,9 +1,6 @@
 package com.wafflestudio.seminar.domain.user.dto
 
-import com.wafflestudio.seminar.domain.seminar.dto.SeminarParticipantDto
-import com.wafflestudio.seminar.domain.user.model.ParticipantProfile
 import com.wafflestudio.seminar.domain.user.model.User
-import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import java.time.LocalDateTime
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
