@@ -1,6 +1,9 @@
 package com.wafflestudio.seminar.domain.user.model
 
-import com.wafflestudio.seminar.domain.model.BaseEntity
+import com.wafflestudio.seminar.domain.model.BaseTimeEntity
+import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
+import org.springframework.data.annotation.CreatedDate
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
@@ -13,13 +16,23 @@ class User(
     val email: String,
 
     @field:NotBlank
-    val name: String,
+    var name: String,
 
     @field:NotBlank
-    val password: String,
+    var password: String,
 
+    // requset 시에만 사용하는 필드인가..? 아닐텐데...
     @Column
     @field:NotNull
-    val roles: String = "",
+    var roles: String = "",
 
-    ) : BaseEntity()
+    @Column
+    @field:CreatedDate
+    val date_joined: LocalDateTime = LocalDateTime.now(),
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    var instructorProfile: InstructorProfile? = null,
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    var participantProfile: ParticipantProfile? = null
+) : BaseTimeEntity()
