@@ -33,7 +33,7 @@ spring:
   datasource:
     url: jdbc:mysql://spring-seminar-database.czf0lti4mvdi.us-east-2.rds.amazonaws.com/seminar?serverTimezone=UTC
     username: admin
-    password: Alzhs21686!!
+    password: Tkdlajsd9409!!
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
