@@ -98,6 +98,7 @@ class IntegrationTest(
         ).andExpect { status { isOk() } }
     }
 
+
     @Test
     @Transactional
     fun `참여자 등록`(){
