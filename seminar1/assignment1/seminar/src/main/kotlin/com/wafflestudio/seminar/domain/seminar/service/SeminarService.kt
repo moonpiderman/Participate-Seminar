@@ -41,7 +41,7 @@ class SeminarService(
     fun saveSeminar(user: User, seminarRequest: SeminarDto.Request): Seminar {
         if (checkUserRole(user)) {
             val storedSeminar = seminarRepository.save(
-                Seminar(seminarRequest.name, seminarRequest.capacity, seminarRequest.count, seminarRequest.time))
+                Seminar(seminarRequest.name, seminarRequest.capacity, seminarRequest.count, seminarRequest.time, seminarRequest.online.toBoolean()))
             val instructorId = user.instructorProfile?.id
             val instructor = instructorService.getInstructorResponseId(instructorId)
             instructor.seminar = storedSeminar

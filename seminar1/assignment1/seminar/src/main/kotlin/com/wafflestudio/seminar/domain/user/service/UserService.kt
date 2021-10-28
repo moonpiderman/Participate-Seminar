@@ -30,9 +30,7 @@ class UserService(
     }
 
     fun enrollRole(userInfo: User, signupRequest: UserDto.SignupRequest) {
-        // role = participant
         if (signupRequest.role == "participant") {
-            userInfo.roles = signupRequest.role
             participantRepository.save(
                 ParticipantProfile(
                     signupRequest.university,
@@ -42,7 +40,6 @@ class UserService(
             )
         }
         if (signupRequest.role == "instructor") {
-            userInfo.roles = signupRequest.role
             instructorRepository.save(
                 InstructorProfile(
                     signupRequest.company,

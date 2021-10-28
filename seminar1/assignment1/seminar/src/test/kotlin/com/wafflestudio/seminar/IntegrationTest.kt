@@ -1,9 +1,9 @@
 package com.wafflestudio.seminar
 
-import com.wafflestudio.seminar.domain.user.exception.UserNotFoundException
-import com.wafflestudio.seminar.domain.user.model.User
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import com.wafflestudio.seminar.domain.user.service.UserService
+import org.aspectj.lang.annotation.Before
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -18,6 +18,7 @@ import javax.transaction.Transactional
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @AutoConfigureMockMvc
+@Transactional
 class IntegrationTest(
     private val mockMvc: MockMvc,
     private val userRepository: UserRepository,
@@ -36,6 +37,20 @@ class IntegrationTest(
         }
     }
 
+//    @BeforeEach
+//    fun `세미나 생성`() {
+//        createSeminar("bomoonI",
+//            """
+//            {
+//                "name": "bomoonI2 Seminar",
+//                "capacity": 40,
+//                "count": 3,
+//                "time": "14:00"
+//            }
+//        """.trimIndent()
+//        )
+//    }
+
     @Test
     @Transactional
     fun `id를 통한 회원 조회`() {
@@ -43,16 +58,16 @@ class IntegrationTest(
         // 여기서도 userService 를 끌어와서 실패로직을 같이 만드는 것이 맞나?
         // 일단 조회가 안되어야 쓰겄는디
 
-        getUserResponseById(1)!!.andExpect {
+        userInfoResponseById(1).andExpect {
             status { isOk() }
         }
-        getUserResponseById(2)!!.andExpect {
+        userInfoResponseById(2).andExpect {
             status { isOk() }
         }
-        getUserResponseById(10)!!.andExpect {
-            error(UserNotFoundException())
+        // fail logic
+//        getUserResponseById(10).andExpect {
 //            status { isBadRequest() }
-        }
+//        }
     }
 
     @Test
@@ -154,6 +169,20 @@ class IntegrationTest(
         ).andExpect { status { isBadRequest() } }
     }
 
+    @Test
+    fun `세미나 생성 검증`() {
+        createSeminar("bomoonI",
+        """
+            {
+                "name": "bomoonI2 Seminar",
+                "capacity": 40,
+                "count": 3,
+                "time": "14:00"
+            }
+        """.trimIndent()
+        )
+    }
+
     private fun signupAsParticipantUser(name: String): ResultActionsDsl {
         val body =
             """
@@ -183,6 +212,19 @@ class IntegrationTest(
             """.trimIndent()
         return signup(body)
     }
+
+//    private fun requestForCreateSeminar(name: String): ResultActionsDsl {
+//        val body =
+//            """
+//                {
+//                    "name": "${name} Seminar",
+//                    "capacity": 10,
+//                    "count": 5,
+//                    "time": "13:00"
+//                }
+//            """.trimIndent()
+//        return createSeminar(name, body)
+//    }
 
     private fun signup(body: String): ResultActionsDsl {
         return mockMvc.post("/api/v1/users/") {
@@ -215,13 +257,10 @@ class IntegrationTest(
         }
     }
 
-    private fun getUserResponseById(id: Long): ResultActionsDsl? {
-
-        val userName = userService.getUserResponseId(id) // 여기서 UserNotFound 처리?
-        val authentication = signin(userName.name)
-
+    private fun userInfoResponseById(id: Long): ResultActionsDsl {
+        val user = userService.getUserResponseId(id)
         return mockMvc.get("/api/v1/users/{id}/", id) {
-            header("Authentication", authentication!!)
+            header("Authentication", signin(user.name)!!)
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
         }
@@ -240,6 +279,16 @@ class IntegrationTest(
     private fun registerParticipant(name: String, body: String): ResultActionsDsl {
         val authentication = signin(name)
         return mockMvc.post("/api/v1/users/participant/") {
+            header("Authentication", authentication!!)
+            content = body
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+        }
+    }
+
+    private fun createSeminar(name: String, body: String): ResultActionsDsl {
+        val authentication = signin(name)
+        return mockMvc.post("/api/v1/seminars/") {
             header("Authentication", authentication!!)
             content = body
             contentType = MediaType.APPLICATION_JSON
