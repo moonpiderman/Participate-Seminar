@@ -12,5 +12,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:    
-    - name: Create yaml
+    - name: Create application
       run: ehco "${{ secrets.APPLICATION_YAML }}" > ./seminar1/assignment1/seminar/src/main/resources/application.yml
