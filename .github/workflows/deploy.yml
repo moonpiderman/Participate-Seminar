@@ -7,10 +7,10 @@ on:
     branches: [ deploy ]
 
 jobs:
-  build:
+  deploy:
     name: Deploy
     runs-on: ubuntu-latest
 
     steps:    
-      - name: Create yaml
-        run: ehco "${{ secrets.APPLICATION_YAML }}" > ./seminar1/assignment1/seminar/src/main/resources/application.yml
+    - name: Create yaml
+      run: ehco "${{ secrets.APPLICATION_YAML }}" > ./seminar1/assignment1/seminar/src/main/resources/application.yml
