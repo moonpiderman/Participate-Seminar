@@ -25,4 +25,4 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 #       - uses: actions/checkout@v
       - name: Create yaml
-        run: ehco "${{ secrets.APPLICATION_YAML }}" > ./seminar1/assignment1/seminar/src/main/resources/application.yml
+        run: ehco "${{ secrets.APPLICATION_YAML }}" > /seminar1/assignment1/seminar/src/main/resources/application.yml
