@@ -12,18 +12,21 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestConstructor
 import org.springframework.test.web.servlet.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import javax.transaction.Transactional
 
 @ActiveProfiles("test")
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @AutoConfigureMockMvc
-@Transactional
+//@Transactional
 class IntegrationTest(
     private val mockMvc: MockMvc,
     private val userRepository: UserRepository,
     private val userService: UserService,
 ) {
+
     @BeforeEach
     fun `회원가입`() {
         signupAsParticipantUser("bomoonP").andExpect {
@@ -171,17 +174,18 @@ class IntegrationTest(
     }
 
     @Test
+    @Transactional
     fun `세미나 생성 검증`() {
         createSeminar("bomoonI",
         """
             {
                 "name": "bomoonI2 Seminar",
-                "capacity": 40,
-                "count": 3,
+                "capacity": "40",
+                "count": "3",
                 "time": "14:00"
             }
         """.trimIndent()
-        )
+        ).andExpect { status { isCreated() } }
     }
 
     private fun signupAsParticipantUser(name: String): ResultActionsDsl {
@@ -213,19 +217,6 @@ class IntegrationTest(
             """.trimIndent()
         return signup(body)
     }
-
-//    private fun requestForCreateSeminar(name: String): ResultActionsDsl {
-//        val body =
-//            """
-//                {
-//                    "name": "${name} Seminar",
-//                    "capacity": 10,
-//                    "count": 5,
-//                    "time": "13:00"
-//                }
-//            """.trimIndent()
-//        return createSeminar(name, body)
-//    }
 
     private fun signup(body: String): ResultActionsDsl {
         return mockMvc.post("/api/v1/users/") {
@@ -296,4 +287,13 @@ class IntegrationTest(
             accept = MediaType.APPLICATION_JSON
         }
     }
+
+//    private fun createSeminar(name: String, body: String): ResultActions {
+//        val authentication = signin(name)
+//        return mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/seminars/")
+//            .header("Authentication", authentication!!)
+//            .content(body)
+//            .contentType(MediaType.APPLICATION_JSON)
+//            .accept(MediaType.APPLICATION_JSON))
+//    }
 }
