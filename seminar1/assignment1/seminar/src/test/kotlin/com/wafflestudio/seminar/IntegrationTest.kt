@@ -1,29 +1,33 @@
 package com.wafflestudio.seminar
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.jsonMapper
+import com.wafflestudio.seminar.domain.seminar.dto.SeminarDto
+import com.wafflestudio.seminar.domain.user.dto.UserDto
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
 import com.wafflestudio.seminar.domain.user.service.UserService
-import org.aspectj.lang.annotation.Before
-import org.junit.jupiter.api.BeforeAll
+import org.json.JSONObject
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.json
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestConstructor
+import org.springframework.test.web.client.match.MockRestRequestMatchers.content
 import org.springframework.test.web.servlet.*
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.web.servlet.function.RequestPredicates.contentType
+import java.time.LocalTime
 import javax.transaction.Transactional
 
 @ActiveProfiles("test")
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @AutoConfigureMockMvc
-//@Transactional
 class IntegrationTest(
     private val mockMvc: MockMvc,
-    private val userRepository: UserRepository,
     private val userService: UserService,
 ) {
 
@@ -40,20 +44,6 @@ class IntegrationTest(
         }
     }
 
-//    @BeforeEach
-//    fun `세미나 생성`() {
-//        createSeminar("bomoonI",
-//            """
-//            {
-//                "name": "bomoonI2 Seminar",
-//                "capacity": 40,
-//                "count": 3,
-//                "time": "14:00"
-//            }
-//        """.trimIndent()
-//        )
-//    }
-
     @Test
     @Transactional
     fun `id를 통한 회원 조회`() {
@@ -63,14 +53,10 @@ class IntegrationTest(
 
         userInfoResponseById(1).andExpect {
             status { isOk() }
-        }
+        }.andDo { print() }
         userInfoResponseById(2).andExpect {
             status { isOk() }
-        }
-        // fail logic
-//        getUserResponseById(10).andExpect {
-//            status { isBadRequest() }
-//        }
+        }.andDo { print() }
     }
 
     @Test
@@ -87,6 +73,7 @@ class IntegrationTest(
                 }
             """.trimIndent()
         ).andExpect { status { isOk() } }
+            .andDo { print() }
 
         modifyUser(name = "bomoonI",
             body = """
@@ -99,6 +86,7 @@ class IntegrationTest(
                 }
             """.trimIndent()
         ).andExpect { status { isOk() } }
+            .andDo { print() }
     }
 
 
@@ -113,6 +101,7 @@ class IntegrationTest(
                 }
             """.trimIndent()
         ).andExpect { status { isCreated() } }
+            .andDo { print() }
     }
 
     @Test
@@ -120,7 +109,7 @@ class IntegrationTest(
     fun `내 정보 조회`() {
         userMe("bomoonP").andExpect {
             status { isOk() }
-        }
+        }.andDo { print() }
 
         userMe("bomoonI").andExpect {
             status { isOk() }
@@ -176,16 +165,32 @@ class IntegrationTest(
     @Test
     @Transactional
     fun `세미나 생성 검증`() {
-        createSeminar("bomoonI",
+        val request =
+            """
+                {
+                    "name": "Seminar",
+                    "capacity": "30",
+                    "count": "4",
+                    "time": "14:00"
+                }
+            """.trimIndent()
+        createSeminar(name = "bomoonI", body = request)
+            .andExpect { status { isCreated() } }
+    }
+
+    @Test
+    @Transactional
+    fun `participant는 세미나 생성 불가`() {
+        createSeminar("bomoonP",
         """
             {
-                "name": "bomoonI2 Seminar",
+                "name": "bomoonP Seminar",
                 "capacity": "40",
-                "count": "3",
-                "time": "14:00"
+                "count": "5",
+                "time": "12:00"
             }
         """.trimIndent()
-        ).andExpect { status { isCreated() } }
+        ).andExpect { status { isForbidden() } }
     }
 
     private fun signupAsParticipantUser(name: String): ResultActionsDsl {
@@ -196,8 +201,7 @@ class IntegrationTest(
                     "name": "${name}",
                     "password": "${name}",
                     "role": "participant",
-                    "university": "Test Univ.",
-                    "accepted": "true"
+                    "university": "Test Univ.."
                 }
             """.trimIndent()
         return signup(body)
@@ -210,9 +214,7 @@ class IntegrationTest(
                     "email": "${name}@gmail.com",
                     "name": "${name}",
                     "password": "${name}",
-                    "role": "instructor",
-                    "company": "wafflestudio",
-                    "year": "1"
+                    "role": "instructor"
                 }
             """.trimIndent()
         return signup(body)
@@ -220,9 +222,9 @@ class IntegrationTest(
 
     private fun signup(body: String): ResultActionsDsl {
         return mockMvc.post("/api/v1/users/") {
-            content = body
-            contentType = MediaType.APPLICATION_JSON
-            accept = MediaType.APPLICATION_JSON
+            content = (body)
+            contentType = (MediaType.APPLICATION_JSON)
+            accept = (MediaType.APPLICATION_JSON)
         }
     }
 
@@ -282,18 +284,9 @@ class IntegrationTest(
         val authentication = signin(name)
         return mockMvc.post("/api/v1/seminars/") {
             header("Authentication", authentication!!)
-            content = body
-            contentType = MediaType.APPLICATION_JSON
-            accept = MediaType.APPLICATION_JSON
+            content = (body)
+            contentType = (MediaType.APPLICATION_JSON)
+            accept = (MediaType.APPLICATION_JSON)
         }
     }
-
-//    private fun createSeminar(name: String, body: String): ResultActions {
-//        val authentication = signin(name)
-//        return mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/seminars/")
-//            .header("Authentication", authentication!!)
-//            .content(body)
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .accept(MediaType.APPLICATION_JSON))
-//    }
 }
