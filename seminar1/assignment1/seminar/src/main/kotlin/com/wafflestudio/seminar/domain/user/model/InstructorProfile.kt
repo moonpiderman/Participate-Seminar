@@ -13,10 +13,9 @@ class InstructorProfile (
     @Column
     var year: Int? = null,
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    val user: User,
+    @OneToOne(mappedBy = "instructorProfile")
+    val user: User? = null,
 
-    @ManyToOne(cascade = [CascadeType.MERGE], fetch= FetchType.EAGER, optional = true)
+    @ManyToOne(cascade = [CascadeType.ALL], fetch= FetchType.LAZY, optional = true)
     var seminar: Seminar? = null,
 ) : BaseTimeEntity()

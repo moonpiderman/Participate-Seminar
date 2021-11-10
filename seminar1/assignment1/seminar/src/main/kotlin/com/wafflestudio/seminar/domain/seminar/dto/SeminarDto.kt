@@ -1,5 +1,6 @@
 package com.wafflestudio.seminar.domain.seminar.dto
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.wafflestudio.seminar.domain.seminar.model.Seminar
 import com.wafflestudio.seminar.domain.user.dto.InstructorsProfileForSeminarDto
 import com.wafflestudio.seminar.domain.user.repository.UserRepository
@@ -35,7 +36,7 @@ class SeminarDto {
             },
             participants = seminar.seminarParticipant.map {it ->
                 SeminarParticipantDto.ResponseForSeminarParticipants(
-                    userRepository.findUserByEmail(it.participantProfile.user.email), it)
+                    userRepository.findUserByEmail(it.participantProfile.user!!.email), it)
             }
         )
     }
@@ -60,10 +61,10 @@ class SeminarDto {
             time = seminar.time,
             online = seminar.online,
             instructors = seminar.instructors.map {
-                InstructorsProfileForSeminarDto.Response(it.user)
+                InstructorsProfileForSeminarDto.Response(it.user!!)
             },
             participants = seminar.seminarParticipant.map {
-                SeminarParticipantDto.ResponseForSeminarParticipants(it.participantProfile.user, it)
+                SeminarParticipantDto.ResponseForSeminarParticipants(it.participantProfile.user!!, it)
             }
         )
     }
@@ -80,7 +81,7 @@ class SeminarDto {
         @Min(1)
         val count: Long,
 
-        @field:DateTimeFormat(pattern = "HH:mm")
+        @field:JsonFormat(pattern = "HH:mm")
         val time: LocalTime,
 
         val online: String,

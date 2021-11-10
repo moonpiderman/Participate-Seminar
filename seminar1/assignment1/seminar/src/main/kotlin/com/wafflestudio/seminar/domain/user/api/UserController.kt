@@ -22,7 +22,6 @@ class UserController(
     @PostMapping("/")
     fun signup(@Valid @RequestBody signupRequest: UserDto.SignupRequest): ResponseEntity<UserDto.Response> {
         val user = userService.signup(signupRequest)
-        userService.enrollRole(user, signupRequest)
         return ResponseEntity.noContent().header("Authentication", jwtTokenProvider.generateToken(user.email)).build()
     }
 

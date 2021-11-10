@@ -6,8 +6,6 @@ import com.wafflestudio.seminar.domain.user.dto.UserDto
 import com.wafflestudio.seminar.domain.user.exception.*
 import com.wafflestudio.seminar.domain.user.model.InstructorProfile
 import com.wafflestudio.seminar.domain.user.model.ParticipantProfile
-import com.wafflestudio.seminar.domain.user.repository.InstructorRepository
-import com.wafflestudio.seminar.domain.user.repository.ParticipantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -16,39 +14,34 @@ import org.springframework.stereotype.Service
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-
-    private val participantRepository: ParticipantRepository,
-    private val instructorRepository: InstructorRepository,
-
-    private val participantService: ParticipantService,
 ) {
     fun signup(signupRequest: UserDto.SignupRequest): User {
+        var participant: ParticipantProfile? = null
+        var instructor: InstructorProfile? = null
         if (userRepository.existsByEmail(signupRequest.email)) throw UserAlreadyExistsException()
-        if ((signupRequest.role != "participant") && (signupRequest.role != "instructor")) throw UserRoleException()
+        val email = signupRequest.email
+        val name = signupRequest.name
         val encodedPassword = passwordEncoder.encode(signupRequest.password)
-        return userRepository.save(User(signupRequest.email, signupRequest.name, encodedPassword, signupRequest.role))
-    }
+        val role = signupRequest.role
+        val university = signupRequest.university
+        val accepted = signupRequest.accepted
+        val company = signupRequest.company
+        val year = signupRequest.year
 
-    fun enrollRole(userInfo: User, signupRequest: UserDto.SignupRequest) {
-        if (signupRequest.role == "participant") {
-            participantRepository.save(
-                ParticipantProfile(
-                    signupRequest.university,
-                    signupRequest.accepted,
-                    user = getUserResponseId(userInfo.id)
-                )
-            )
+        when (role) {
+            "instructor" -> instructor = InstructorProfile(company, year)
+            "participant" -> participant = ParticipantProfile(university, accepted)
+            else -> throw UserRoleException()
         }
-        if (signupRequest.role == "instructor") {
-            instructorRepository.save(
-                InstructorProfile(
-                    signupRequest.company,
-                    signupRequest.year,
-                    user = getUserResponseId(userInfo.id)
-                )
-            )
-        }
-        userRepository.save(userInfo)
+
+        return userRepository.save(User(
+            email = email,
+            name = name,
+            password = encodedPassword,
+            roles = role,
+            instructorProfile = instructor,
+            participantProfile = participant,
+        ))
     }
 
     fun modifyMe(currentUser: User, modifyRequest: UserDto.ModifyRequest): User {

@@ -28,9 +28,9 @@ class User(
     @field:CreatedDate
     val date_joined: LocalDateTime = LocalDateTime.now(),
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     var instructorProfile: InstructorProfile? = null,
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     var participantProfile: ParticipantProfile? = null
 ) : BaseTimeEntity()
