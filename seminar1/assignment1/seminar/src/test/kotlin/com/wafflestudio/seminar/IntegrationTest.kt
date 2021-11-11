@@ -169,13 +169,15 @@ class IntegrationTest(
             """
                 {
                     "name": "Seminar",
-                    "capacity": "30",
-                    "count": "4",
+                    "capacity": 30,
+                    "count": 4,
                     "time": "14:00"
                 }
             """.trimIndent()
-        createSeminar(name = "bomoonI", body = request)
-            .andExpect { status { isCreated() } }
+        createSeminar(name = "bomoonI", request
+        )
+            .andExpect {
+                status { isCreated() } }
     }
 
     @Test
@@ -284,7 +286,7 @@ class IntegrationTest(
         val authentication = signin(name)
         return mockMvc.post("/api/v1/seminars/") {
             header("Authentication", authentication!!)
-            content = (body)
+            content = body
             contentType = (MediaType.APPLICATION_JSON)
             accept = (MediaType.APPLICATION_JSON)
         }
