@@ -14,13 +14,10 @@ class ParticipantProfile (
     @field:NotNull
     var accepted: Boolean? = true,
 
-    // user_id에 관한 필드가 존재해야한다.
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    val user: User,
+    @OneToOne(mappedBy = "participantProfile")
+    val user: User? = null,
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "participant_profile_id")
+    @OneToMany(mappedBy = "participantProfile", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val seminarParticipant : MutableList<SeminarParticipant> = mutableListOf()
 ) : BaseTimeEntity() {
     fun enrollSeminar(mappingSeminar: SeminarParticipant) {

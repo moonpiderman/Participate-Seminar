@@ -8,6 +8,7 @@ import com.wafflestudio.seminar.domain.seminar.model.SeminarParticipant
 import com.wafflestudio.seminar.domain.seminar.repository.SeminarParticipantRepository
 import com.wafflestudio.seminar.domain.seminar.repository.SeminarRepository
 import com.wafflestudio.seminar.domain.user.exception.InstructorUnAuthorization
+import com.wafflestudio.seminar.domain.user.exception.UserRoleException
 import com.wafflestudio.seminar.domain.user.model.User
 import com.wafflestudio.seminar.domain.user.repository.InstructorRepository
 import com.wafflestudio.seminar.domain.user.repository.ParticipantRepository
@@ -40,15 +41,18 @@ class SeminarService(
 
     fun saveSeminar(user: User, seminarRequest: SeminarDto.Request): Seminar {
         if (checkUserRole(user)) {
-            val storedSeminar = seminarRepository.save(
-                Seminar(seminarRequest.name, seminarRequest.capacity, seminarRequest.count, seminarRequest.time))
-            val instructorId = user.instructorProfile?.id
-            val instructor = instructorService.getInstructorResponseId(instructorId)
-            instructor.seminar = storedSeminar
-            user.instructorProfile = instructor
-            userRepository.save(user)
-            return storedSeminar
-        } else { throw NoAuthenticationCreatSeminar() }
+            val name = seminarRequest.name
+            val capacity = seminarRequest.capacity
+            val count = seminarRequest.count
+            val time = seminarRequest.time
+            val online = seminarRequest.online.lowercase().toBoolean()
+
+            val newSeminar = seminarRepository.save(Seminar(name, capacity, count, time, online))
+            user.instructorProfile!!.seminar = newSeminar
+
+            newSeminar.addInstructor(user.instructorProfile!!)
+            return seminarRepository.save(newSeminar)
+        } else { throw UserRoleException() }
     }
 
     fun participateSeminar(id: Long, joinRequest: SeminarDto.JoinRequest, user: User): Seminar {

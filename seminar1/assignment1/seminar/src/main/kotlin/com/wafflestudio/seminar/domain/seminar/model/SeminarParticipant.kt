@@ -8,11 +8,10 @@ import javax.persistence.*
 @Entity
 @Table(name = "seminar_participant")
 class SeminarParticipant(
-    @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
+    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val seminar: Seminar,
 
-    // ParticipantProfile 에서 link 해줄 부분이 필요하다.
-    @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.EAGER)
+    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val participantProfile: ParticipantProfile,
 
     @Column(name = "joined_at")

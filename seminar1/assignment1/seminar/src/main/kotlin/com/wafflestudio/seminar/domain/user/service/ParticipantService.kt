@@ -16,7 +16,8 @@ class ParticipantService(
     private val participantRepository: ParticipantRepository,
     private val userRepository: UserRepository,
 ) {
-    fun enrollParticipant(currentUser: User, participantRequest: ParticipantDto.ParticipantRequest
+    fun enrollParticipant(
+        currentUser: User, participantRequest: ParticipantDto.ParticipantRequest
     ): User {
         if (currentUser.roles == "instructor") {
             val setRole = currentUser.roles.split(",").toSet()
@@ -41,9 +42,5 @@ class ParticipantService(
 
         val addParticipant = userRepository.save(currentUser)
         return addParticipant
-    }
-
-    fun getParticipantResponseById(id: Long): ParticipantProfile {
-        return participantRepository.findByIdOrNull(id) ?: throw UserNotFoundException()
     }
 }
