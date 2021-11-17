@@ -23,6 +23,7 @@ class Seminar (
     @field:NotNull
     var time: LocalTime,
 
+    @field:NotNull
     var online: Boolean = true,
 
     @OneToMany(mappedBy = "seminar", cascade = [CascadeType.ALL])

@@ -113,7 +113,7 @@ class IntegrationTest(
 
         userMe("bomoonI").andExpect {
             status { isOk() }
-        }
+        }.andDo { print() }
     }
 
     @Test
@@ -165,17 +165,16 @@ class IntegrationTest(
     @Test
     @Transactional
     fun `세미나 생성 검증`() {
-        val request =
-            """
-                {
-                    "name": "Seminar",
-                    "capacity": 30,
-                    "count": 4,
-                    "time": "14:00"
-                }
-            """.trimIndent()
-        createSeminar(name = "bomoonI", request
-        )
+        createSeminar("bomoonI",
+        """
+            {
+                "name": "bomoonI Seminar",
+                "capacity": 40,
+                "count": 5,
+                "time": "14:00",
+                "online": true
+            }
+        """.trimIndent())
             .andExpect {
                 status { isCreated() } }
     }
@@ -193,6 +192,16 @@ class IntegrationTest(
             }
         """.trimIndent()
         ).andExpect { status { isForbidden() } }
+    }
+
+    private fun createSeminar(name: String, body: String): ResultActionsDsl {
+        val authentication = signin(name)
+        return mockMvc.post("/api/v1/seminars/") {
+            header("Authentication", authentication!!)
+            content = body
+            contentType = (MediaType.APPLICATION_JSON)
+            accept = (MediaType.APPLICATION_JSON)
+        }
     }
 
     private fun signupAsParticipantUser(name: String): ResultActionsDsl {
@@ -282,13 +291,13 @@ class IntegrationTest(
         }
     }
 
-    private fun createSeminar(name: String, body: String): ResultActionsDsl {
-        val authentication = signin(name)
-        return mockMvc.post("/api/v1/seminars/") {
-            header("Authentication", authentication!!)
-            content = body
-            contentType = (MediaType.APPLICATION_JSON)
-            accept = (MediaType.APPLICATION_JSON)
-        }
-    }
+//    private fun createSeminar(name: String, body: String): ResultActionsDsl {
+//        val authentication = signin(name)
+//        return mockMvc.post("/api/v1/seminars/") {
+//            header("Authentication", authentication!!)
+//            content = body
+//            contentType = (MediaType.APPLICATION_JSON)
+//            accept = (MediaType.APPLICATION_JSON)
+//        }
+//    }
 }

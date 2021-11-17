@@ -84,7 +84,7 @@ class SeminarDto {
         @field:JsonFormat(pattern = "HH:mm")
         val time: LocalTime,
 
-        val online: String,
+        val online: String = "true",
     )
 
     data class JoinRequest(
