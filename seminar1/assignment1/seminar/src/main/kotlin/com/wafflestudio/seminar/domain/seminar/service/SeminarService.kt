@@ -87,6 +87,7 @@ class SeminarService(
 
 
         } else if (requestRole == "instructor") {
+            if (user.roles == "participant") { throw NoAuthenticationForParticipate("No authentication by participant.")}
             if (user.instructorProfile?.seminar != null) {
                 throw AlreadyJoinSeminarAsInstructor()
             } else {
