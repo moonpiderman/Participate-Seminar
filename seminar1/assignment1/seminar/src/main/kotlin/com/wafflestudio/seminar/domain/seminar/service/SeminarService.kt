@@ -72,20 +72,19 @@ class SeminarService(
                 throw CapacityOver("Capacity over.")
             }
 
-            val seminarParticipantForCheckIsActive = seminarInfo.seminarParticipant.find { it.seminar == seminarInfo }
-            if (seminarParticipantForCheckIsActive != null) {
-                if (seminarParticipantForCheckIsActive.participantProfile.user == user) {
-                    if (!(seminarParticipantForCheckIsActive.isActive))
-                        throw CannotJoinDroppingSeminar("Cannot join this seminar again.")
-                }
+            val seminarFilter = seminarInfo.seminarParticipant.find { it.participantProfile.user!!.email == user.email }
+            if (seminarFilter != null) {
+                if (!seminarFilter.isActive) { throw CannotJoinDroppingSeminar("Cannot join this seminar again.") }
             }
 
             val seminarParticipant = SeminarParticipant(
                 seminar = seminarInfo, participantProfile = user.participantProfile!!, joinedAt = LocalDateTime.now())
 
-            user.participantProfile!!.seminarParticipant.add(seminarParticipant)
-            userRepository.save(user)
             seminarInfo.addParticipant(seminarParticipant)
+            user.participantProfile!!.enrollSeminar(seminarParticipant)
+            userRepository.save(user)
+            seminarRepository.save(seminarInfo)
+
 
         } else if (requestRole == "instructor") {
             if (user.instructorProfile?.seminar != null) {
@@ -93,6 +92,7 @@ class SeminarService(
             } else {
                 user.instructorProfile!!.seminar = seminarInfo
                 seminarInfo.addInstructor(user.instructorProfile!!)
+                userRepository.save(user)
                 seminarRepository.save(seminarInfo)
             }
         } else {
