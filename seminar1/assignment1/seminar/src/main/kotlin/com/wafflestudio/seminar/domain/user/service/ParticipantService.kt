@@ -37,7 +37,8 @@ class ParticipantService(
 
         val changeAccepted = accepted.lowercase().toBoolean()
 
-        val newParticipantInfo = participantRepository.save(ParticipantProfile(university, changeAccepted, currentUser))
+//        val newParticipantInfo = participantRepository.save(ParticipantProfile(university, changeAccepted, currentUser))
+        val newParticipantInfo = ParticipantProfile(university, changeAccepted)
         currentUser.participantProfile = newParticipantInfo
 
         val addParticipant = userRepository.save(currentUser)
