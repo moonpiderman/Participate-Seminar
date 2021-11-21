@@ -74,5 +74,38 @@ class DataLoader(
             }
         }
 
+        // sample
+        val participantUser = User(
+            email = "partiSample@email.com",
+            name = "partiSample",
+            password = "password",
+            roles = "participant",
+            participantProfile = ParticipantProfile(university = "SNU", accepted = true)
+        )
+        userRepository.save(participantUser)
+
+        val instructorUser = User(
+            email = "instructorSample@email.com",
+            name = "instructorSample",
+            password = "password",
+            roles = "instructor",
+            instructorProfile = InstructorProfile(company = "waffle", year = 3)
+        )
+        userRepository.save(instructorUser)
+
+        val formmater = DateTimeFormatter.ofPattern("HH:mm")
+
+        val seminarSample = Seminar(
+            name = "Seminar Sample",
+            capacity = 40,
+            count = 5,
+            time = LocalTime.parse("14:00", formmater),
+            online = true
+        )
+        seminarRepository.save(seminarSample)
+        instructorUser.instructorProfile!!.seminar = seminarSample
+        seminarSample.addInstructor(instructorUser.instructorProfile!!)
+        userRepository.save(instructorUser)
+
     }
 }

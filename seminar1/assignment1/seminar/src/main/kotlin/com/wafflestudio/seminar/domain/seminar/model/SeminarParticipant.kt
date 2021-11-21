@@ -15,7 +15,7 @@ class SeminarParticipant(
     val participantProfile: ParticipantProfile,
 
     @Column(name = "joined_at")
-    var joinedAt: LocalDateTime = LocalDateTime.now(),
+    var joinedAt: LocalDateTime? = null,
 
     @Column(name = "is_active")
     var isActive: Boolean = true,

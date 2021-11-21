@@ -15,7 +15,7 @@ class SeminarParticipantDto {
         constructor(seminarParticipant: SeminarParticipant): this(
             id = seminarParticipant.seminar.id,
             name = seminarParticipant.seminar.name,
-            joinedAt = seminarParticipant.joinedAt,
+            joinedAt = seminarParticipant.joinedAt!!,
             isActive = seminarParticipant.isActive,
             droppedAt = seminarParticipant.droppedAt
         )
@@ -35,7 +35,7 @@ class SeminarParticipantDto {
             name = user.name,
             email = user.email,
             university = user.participantProfile?.university,
-            joinedAt = seminarParticipant.joinedAt,
+            joinedAt = seminarParticipant.joinedAt!!,
             isActive = seminarParticipant.isActive,
             droppedAt = seminarParticipant.droppedAt,
         )

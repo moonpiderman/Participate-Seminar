@@ -17,7 +17,7 @@ class ParticipantProfile (
     @OneToOne(mappedBy = "participantProfile")
     val user: User? = null,
 
-    @OneToMany(mappedBy = "participantProfile", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "participantProfile", fetch = FetchType.EAGER, cascade = [CascadeType.MERGE])
     val seminarParticipant : MutableList<SeminarParticipant> = mutableListOf()
 ) : BaseTimeEntity() {
     fun enrollSeminar(mappingSeminar: SeminarParticipant) {

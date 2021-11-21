@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.regex.Pattern.compile
 
 plugins {
     id("org.springframework.boot") version "2.5.4"
@@ -40,6 +41,10 @@ dependencies {
     testImplementation("org.mockito:mockito-inline:2.21.0")
 
     implementation("org.hibernate.validator:hibernate-validator")
+
+    // swagger
+    implementation("io.springfox:springfox-swagger2:2.9.2")
+    implementation("io.springfox:springfox-swagger-ui:2.9.2")
 }
 
 tasks.withType<KotlinCompile> {
