@@ -10,4 +10,4 @@ jobs:
 
     steps:    
     - name: Create application
-      run: ehco "${{ secrets.APPLICATION_YAML }}" > ./seminar1/assignment1/seminar/src/main/resources/application.yml
+      run: ehco "${{ secrets.APPLICATION_YAML }}" > ~/seminar1/assignment1/seminar/src/main/resources/application.yml
