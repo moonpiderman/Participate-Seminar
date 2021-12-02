@@ -43,8 +43,12 @@ dependencies {
     implementation("org.hibernate.validator:hibernate-validator")
 
     // swagger
-    implementation("io.springfox:springfox-swagger2:2.9.2")
-    implementation("io.springfox:springfox-swagger-ui:2.9.2")
+//    implementation("io.springfox:springfox-swagger2:2.9.2")
+//    implementation("io.springfox:springfox-swagger-ui:2.9.2")
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
+
+    // spring doc
+    implementation("org.springdoc:springdoc-openapi-ui:1.5.4")
 }
 
 tasks.withType<KotlinCompile> {
