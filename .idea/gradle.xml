@@ -5,10 +5,10 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/seminar1/assignment1/seminar" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/seminar" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/seminar1/assignment1/seminar" />
+            <option value="$PROJECT_DIR$/seminar" />
           </set>
         </option>
       </GradleProjectSettings>

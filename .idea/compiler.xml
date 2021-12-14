@@ -4,5 +4,9 @@
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="seminar.main" target="11" />
+      <module name="seminar.test" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
