@@ -1,7 +1,13 @@
-# 19.5 rookies spring boot 강좌
+# 👨‍🏫 Seminar Server API 👨‍🎓
 
-> instructor 최한결 @Hank-Choi
+# API Docs
+🔗 [Notion Link](https://eggplant-sumac-51e.notion.site/Seminar-API-Document-a37fea9c43c14153a3c42b803ec63769)
 
-> content Spring boot with Kotlin
 
----
+# Create Database
+```shell
+bash seminar/scripts/bash/init-db.sh
+```
+
+# Data base Scheme
+![image](https://user-images.githubusercontent.com/70942197/145923909-d83c8743-0139-409c-a398-f7935bb52a6d.png)
