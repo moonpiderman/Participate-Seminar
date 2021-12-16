@@ -44,5 +44,5 @@ bash seminar/scripts/bash/init-db.sh
             └── application.yml
 ```
 
-# Data base Scheme
+# Database Scheme
 ![image](https://user-images.githubusercontent.com/70942197/145923909-d83c8743-0139-409c-a398-f7935bb52a6d.png)
